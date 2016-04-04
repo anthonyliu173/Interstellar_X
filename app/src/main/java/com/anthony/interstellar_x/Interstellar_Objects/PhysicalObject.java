@@ -1,9 +1,12 @@
 package com.anthony.interstellar_x.Interstellar_Objects;
 
+import android.content.Context;
 import android.graphics.Point;
+import android.widget.ImageView;
 
 import com.anthony.interstellar_x.App;
 import com.anthony.interstellar_x.Constants;
+import com.anthony.interstellar_x.R;
 
 import java.util.List;
 
@@ -16,6 +19,21 @@ public class PhysicalObject {
     protected Point dimension;
     protected Point position;
     protected Point velocity;
+
+    protected ImageView imageView;
+
+    protected void setImage(Context context){
+        this.imageView = new ImageView(context);
+        this.imageView.getLayoutParams().width = dimension.x;
+        this.imageView.getLayoutParams().height = dimension.y;
+
+        if(this instanceof Spacecraft){
+            this.imageView.setBackgroundResource(R.drawable.spacecraft);
+        }else if(this instanceof Blackhole){
+            this.imageView.setBackgroundResource(R.drawable.blackhole);
+
+        }
+    }
 
     public void updatePosition(){
 
@@ -76,28 +94,40 @@ public class PhysicalObject {
         return new Point(force_x, force_y);
     }
 
-    protected int getMass() {
+    public int getMass() {
         return mass;
     }
 
-    protected void setMass(int mass) {
+    public void setMass(int mass) {
         this.mass = mass;
     }
 
-    protected Point getPosition() {
+    public Point getPosition() {
         return position;
     }
 
-    protected void setPosition(Point position) {
+    public void setPosition(Point position) {
         this.position = position;
     }
 
-    protected Point getVelocity() {
+    public Point getVelocity() {
         return velocity;
     }
 
-    protected void setVelocity(Point velocity) {
+    public void setVelocity(Point velocity) {
         this.velocity = velocity;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
+    public void setImageViewAnimation(){
+
     }
 
 }

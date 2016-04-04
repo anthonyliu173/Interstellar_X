@@ -1,5 +1,6 @@
 package com.anthony.interstellar_x.Interstellar_Objects;
 
+import android.content.Context;
 import android.graphics.Point;
 
 import com.anthony.interstellar_x.Constants;
@@ -24,29 +25,31 @@ public class Meteorite extends PhysicalObject {
     /**
      * A new Meteorite object with random size, position and velocity
      * */
-    public Meteorite(){
+    public Meteorite(Context context){
         this.size = METEORITE_SIZE.getRandom();
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
         this.position = Constants.getRandomPositionOnScreen(this.dimension.x, this.dimension.y);
         this.velocity = Constants.getRandomVelocity();
+        this.setImage(context);
     }
 
     /**
      * A specified Meteorite object with random position and velocity
      * */
-    public Meteorite(METEORITE_SIZE size) {
+    public Meteorite(Context context, METEORITE_SIZE size) {
         this.size = size;
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
         this.position = Constants.getRandomPositionOnScreen(this.dimension.x, this.dimension.y);
         this.velocity = Constants.getRandomVelocity();
+        this.setImage(context);
     }
 
     /**
      * A specified Meteorite object with specified position and velocity
      * */
-    public Meteorite(METEORITE_SIZE size, int position_x, int position_y, int velocity_x, int velocity_y) {
+    public Meteorite(Context context, METEORITE_SIZE size, int position_x, int position_y, int velocity_x, int velocity_y) {
 
         this.size = size;
         this.mass = findMass(size);
@@ -66,6 +69,7 @@ public class Meteorite extends PhysicalObject {
 
         this.position = new Point(position_x, position_y);
         this.velocity = new Point(velocity_x, velocity_y);
+        this.setImage(context);
     }
 
     private int findMass(METEORITE_SIZE size){
