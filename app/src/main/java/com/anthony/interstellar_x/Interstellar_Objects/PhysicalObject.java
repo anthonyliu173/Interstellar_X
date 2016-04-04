@@ -2,6 +2,7 @@ package com.anthony.interstellar_x.Interstellar_Objects;
 
 import android.graphics.Point;
 
+import com.anthony.interstellar_x.App;
 import com.anthony.interstellar_x.Constants;
 
 import java.util.List;
@@ -17,10 +18,18 @@ public class PhysicalObject {
     protected Point velocity;
 
     public void updatePosition(){
+
+        if(this instanceof Blackhole && !App.BLACKHOLE_MOVABLE){
+            return;
+        }
         position.set(position.x + (velocity.x * Constants.TIME_CONSTANT), position.y + (velocity.y * Constants.TIME_CONSTANT));
     }
 
     public void updateVelocity(List<PhysicalObject> visibleObjects){
+
+        if(this instanceof Blackhole && !App.BLACKHOLE_MOVABLE){
+            return;
+        }
 
         int total_force_x = 0;
         int total_force_y = 0;
@@ -41,7 +50,7 @@ public class PhysicalObject {
     /**
      * Gravity formula: F = (GMm)/r^2
      * */
-    protected Point getForce(int targetMass, Point targetPosition){
+    private Point getForce(int targetMass, Point targetPosition){
 
         int distance_x = Math.abs(targetPosition.x - position.x);
         int distance_y = Math.abs(targetPosition.y - position.y);

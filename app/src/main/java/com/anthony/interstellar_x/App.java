@@ -14,6 +14,8 @@ import android.view.WindowManager;
  */
 public class App extends Application {
 
+    public static final boolean BLACKHOLE_MOVABLE = false;
+
     @Override
     public void onCreate() {
         super.onCreate();

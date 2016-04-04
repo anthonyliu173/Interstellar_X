@@ -10,6 +10,9 @@ import com.anthony.interstellar_x.ScreenDimension;
  */
 public class Blackhole extends PhysicalObject{
 
+    /**
+     * Default blackhole whose position is fixed at the center of screen
+     * */
     public Blackhole() {
         this.mass = Constants.BLACKHOLE_MASS;
         this.position = new Point(ScreenDimension.getScreenWidth()/2, ScreenDimension.getScreenHeight()/2);
