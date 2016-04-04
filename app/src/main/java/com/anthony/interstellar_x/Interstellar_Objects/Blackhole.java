@@ -8,11 +8,7 @@ import com.anthony.interstellar_x.ScreenDimension;
 /**
  * Created by anthonyliu on 2016/4/3.
  */
-public class Blackhole {
-
-    private int mass;
-    private Point position;
-    private Point velocity;
+public class Blackhole extends PhysicalObject{
 
     public Blackhole() {
         this.mass = Constants.BLACKHOLE_MASS;
@@ -30,30 +26,6 @@ public class Blackhole {
         this.mass = mass;
         this.position = new Point(position_x, position_y);
         this.velocity = new Point(velocity_x, velocity_y);
-    }
-
-    public int getMass() {
-        return mass;
-    }
-
-    public void setMass(int mass) {
-        this.mass = mass;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
-    public Point getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(Point velocity) {
-        this.velocity = velocity;
     }
 
 }

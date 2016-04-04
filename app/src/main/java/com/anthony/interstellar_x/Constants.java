@@ -12,6 +12,9 @@ import java.util.Random;
  */
 public class Constants {
 
+    public static final int GRAVITY_CONSTANT = 10;
+    public static final int TIME_CONSTANT = 1;
+
     public static final int BLACKHOLE_MASS = 3000;
     public static final int BLACKHOLE_WIDTH = 25;
     public static final int BLACKHOLE_HEIGHT = 25;

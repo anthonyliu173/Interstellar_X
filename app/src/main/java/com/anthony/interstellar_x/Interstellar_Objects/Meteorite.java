@@ -8,7 +8,7 @@ import com.anthony.interstellar_x.ScreenDimension;
 /**
  * Created by anthonyliu on 2016/4/3.
  */
-public class Meteorite {
+public class Meteorite extends PhysicalObject {
 
     public enum METEORITE_SIZE {
         SHORT, TALL, GRANDE, VENTI;
@@ -20,11 +20,6 @@ public class Meteorite {
     }
 
     private METEORITE_SIZE size;
-
-    private int mass;
-    private Point dimension;
-    private Point position;
-    private Point velocity;
 
     /**
      * A new Meteorite object with random size, position and velocity
@@ -71,30 +66,6 @@ public class Meteorite {
 
         this.position = new Point(position_x, position_y);
         this.velocity = new Point(velocity_x, velocity_y);
-    }
-
-    public int getMass() {
-        return mass;
-    }
-
-    public void setMass(int mass) {
-        this.mass = mass;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
-    public Point getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(Point velocity) {
-        this.velocity = velocity;
     }
 
     private int findMass(METEORITE_SIZE size){
