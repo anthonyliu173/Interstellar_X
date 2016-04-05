@@ -30,7 +30,8 @@ public class Meteorite extends PhysicalObject {
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
         this.position = Constants.getRandomPositionOnScreen(this.dimension.x, this.dimension.y);
-        this.velocity = Constants.getRandomVelocity();
+        this.velocity_x = Constants.getRandomVelocity();
+        this.velocity_y = Constants.getRandomVelocity();
         this.setImage(context);
     }
 
@@ -42,7 +43,8 @@ public class Meteorite extends PhysicalObject {
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
         this.position = Constants.getRandomPositionOnScreen(this.dimension.x, this.dimension.y);
-        this.velocity = Constants.getRandomVelocity();
+        this.velocity_x = Constants.getRandomVelocity();
+        this.velocity_y = Constants.getRandomVelocity();
         this.setImage(context);
     }
 
@@ -68,7 +70,8 @@ public class Meteorite extends PhysicalObject {
         }
 
         this.position = new Point(position_x, position_y);
-        this.velocity = new Point(velocity_x, velocity_y);
+        this.velocity_x = Constants.getRandomVelocity();
+        this.velocity_y = Constants.getRandomVelocity();
         this.setImage(context);
     }
 

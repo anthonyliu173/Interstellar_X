@@ -18,7 +18,8 @@ public class Spacecraft extends PhysicalObject{
         this.mass = Constants.SPACECRAFT_MASS;
         this.dimension = new Point(Constants.SPACECRAFT_WIDTH, Constants.SPACECRAFT_HEIGHT);
         this.position = new Point(Constants.SPACECRAFT_WIDTH/2, Constants.SPACECRAFT_HEIGHT/2);
-        this.velocity = new Point(0, 0);
+        this.velocity_x = 0.0;
+        this.velocity_y = 0.0;
         this.setImage(context);
     }
 
@@ -26,7 +27,8 @@ public class Spacecraft extends PhysicalObject{
         this.mass = mass;
         this.dimension = new Point(Constants.SPACECRAFT_WIDTH, Constants.SPACECRAFT_HEIGHT);
         this.position = new Point(Constants.SPACECRAFT_WIDTH/2, Constants.SPACECRAFT_HEIGHT/2);
-        this.velocity = new Point(0, 0);
+        this.velocity_x = 0.0;
+        this.velocity_y = 0.0;
         this.setImage(context);
     }
 
@@ -34,7 +36,8 @@ public class Spacecraft extends PhysicalObject{
         this.mass = mass;
         this.dimension = new Point(Constants.SPACECRAFT_WIDTH, Constants.SPACECRAFT_HEIGHT);
         this.position = new Point(position_x, position_y);
-        this.velocity = new Point(velocity_x, velocity_y);
+        this.velocity_x = 0.0;
+        this.velocity_y = 0.0;
         this.setImage(context);
     }
 

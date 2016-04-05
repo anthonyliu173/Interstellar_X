@@ -12,6 +12,7 @@ import java.util.Random;
  */
 public class Constants {
 
+    public static final double SENSOR_NORMALIZATION = 0.1;
     public static final int GRAVITY_CONSTANT = 10;
     public static final int TIME_CONSTANT = 1;
     public static final double BOUNCE_COEFFICIENT = -0.7; // Velocity is reduced by 30% when bouncing.
@@ -43,12 +44,8 @@ public class Constants {
         return position;
     }
 
-    public static Point getRandomVelocity(){
-        Point position = new Point();
-        int x = getRandom(-RANDOM_VELOCITY_MAX, RANDOM_VELOCITY_MAX);
-        int y = getRandom(-RANDOM_VELOCITY_MAX, RANDOM_VELOCITY_MAX);
-        position.set(x, y);
-        return position;
+    public static Double getRandomVelocity(){
+        return (double)(getRandom(-RANDOM_VELOCITY_MAX, RANDOM_VELOCITY_MAX));
     }
 
     /**

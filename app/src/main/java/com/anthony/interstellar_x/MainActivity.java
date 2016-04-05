@@ -1,7 +1,6 @@
 package com.anthony.interstellar_x;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,7 +9,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
 
+import com.anthony.interstellar_x.Interstellar_Objects.PhysicalObject;
 import com.anthony.interstellar_x.Interstellar_Objects.Spacecraft;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         rlBackground = (RelativeLayout)findViewById(R.id.rlBackground);
         rlBackground.addView(spacecraft.getImageView());
 
-        spacecraft.setVelocity(new Point(80, 40));
+//        spacecraft.setVelocity(new Point(20, 15));
 
         updateInitialPosition();
 
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void setSensor(){
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
@@ -73,18 +75,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Sensor mySensor = sensorEvent.sensor;
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
-
-//            long curTime = System.currentTimeMillis();
-//
-//            if ((curTime - lastUpdate) > UPDATE_INTERVAL) {
-//                lastUpdate = curTime;
-//                // TODO perform PhysicalObjects update
-//                spacecraft.updatePosition();
-//            }
-
+            
+            spacecraft.updateVelocity(new ArrayList<PhysicalObject>(), -x, y);
             spacecraft.updatePosition();
 
         }

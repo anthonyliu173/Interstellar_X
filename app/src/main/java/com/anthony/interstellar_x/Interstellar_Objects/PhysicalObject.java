@@ -20,7 +20,8 @@ public class PhysicalObject {
     protected int mass;
     protected Point dimension;
     protected Point position;
-    protected Point velocity;
+    protected Double velocity_x = 0.0;
+    protected Double velocity_y = 0.0;
 
     protected ImageView imageView;
 
@@ -43,20 +44,20 @@ public class PhysicalObject {
             return;
         }
 
-        position.set(position.x + (velocity.x * Constants.TIME_CONSTANT), position.y + (velocity.y * Constants.TIME_CONSTANT));
-        imageView.setX(position.x);
-        imageView.setY(position.y);
-        checkBounce();
+        position.set((int)(position.x + (velocity_x * Constants.TIME_CONSTANT)), (int)(position.y + (velocity_y * Constants.TIME_CONSTANT)));
+        imageView.setX(position.x - dimension.x / 2);
+        imageView.setY(position.y - dimension.y / 2);
+
     }
 
-    public void updateVelocity(List<PhysicalObject> visibleObjects){
+    public void updateVelocity(List<PhysicalObject> visibleObjects, double sensor_x, double sensor_y){
 
         if(this instanceof Blackhole && !App.BLACKHOLE_MOVABLE){
             return;
         }
 
-        int total_force_x = 0;
-        int total_force_y = 0;
+        double total_force_x = sensor_x * Constants.SENSOR_NORMALIZATION;
+        double total_force_y = sensor_y * Constants.SENSOR_NORMALIZATION;
 
         for(PhysicalObject object : visibleObjects){
             Point force = getForce(object.getMass(), object.getPosition());
@@ -64,10 +65,12 @@ public class PhysicalObject {
             total_force_y += force.y;
         }
 
-        int acc_x = (total_force_x / mass) * Constants.TIME_CONSTANT;
-        int acc_y = (total_force_y / mass) * Constants.TIME_CONSTANT;
+        double acc_x = (total_force_x / mass) * Constants.TIME_CONSTANT;
+        double acc_y = (total_force_y / mass) * Constants.TIME_CONSTANT;
 
-        velocity.set(velocity.x + (acc_x * Constants.TIME_CONSTANT), velocity.y + (acc_y * Constants.TIME_CONSTANT));
+//        velocity.set(velocity.x + (acc_x * Constants.TIME_CONSTANT), velocity.y + (acc_y * Constants.TIME_CONSTANT));
+        velocity_x = velocity_x + (acc_x * Constants.TIME_CONSTANT);
+        velocity_y = velocity_y + (acc_y * Constants.TIME_CONSTANT);
 
         checkBounce();
     }
@@ -103,28 +106,28 @@ public class PhysicalObject {
 
     private void checkBounce(){
 
-        if( position.x < 0 || (position.x + dimension.x) > ScreenDimension.getScreenWidth()){
-            velocity.x = (int)(Constants.BOUNCE_COEFFICIENT * velocity.x);
+        if( (position.x - dimension.x/2)< 0 || (position.x + dimension.x/2) > ScreenDimension.getScreenWidth()){
+            velocity_x = (Constants.BOUNCE_COEFFICIENT * velocity_x);
         }
 
-        if( position.y < 0 || (position.y + dimension.y) > ScreenDimension.getScreenHeight()){
-            velocity.y = (int)(Constants.BOUNCE_COEFFICIENT * velocity.y);
+        if( (position.y - dimension.y/2) < 0 || (position.y + dimension.y/2) > ScreenDimension.getScreenHeight()){
+            velocity_y = (Constants.BOUNCE_COEFFICIENT * velocity_y);
         }
 
-        if( position.x < 0){
-            position.set(1, position.y);
+        if( (position.x - dimension.x/2) < 0){
+            position.set(dimension.x/2 + 1, position.y);
         }
 
-        if( (position.x + dimension.x) > ScreenDimension.getScreenWidth()){
-            position.set(ScreenDimension.getScreenWidth() - dimension.x - 1, position.y);
+        if( (position.x + dimension.x/2) > ScreenDimension.getScreenWidth()){
+            position.set(ScreenDimension.getScreenWidth() - dimension.x/2 - 1, position.y);
         }
 
-        if( position.y < 0){
-            position.set(position.x, 1);
+        if( (position.y - dimension.y/2) < 0){
+            position.set(position.x, dimension.y/2 + 1);
         }
 
-        if( (position.y + dimension.y) > ScreenDimension.getScreenHeight()){
-            position.set(position.x, ScreenDimension.getScreenHeight() - dimension.y - 1);
+        if( (position.y + dimension.y)/2 > ScreenDimension.getScreenHeight()){
+            position.set(position.x, ScreenDimension.getScreenHeight() - dimension.y/2 - 1);
         }
 
     }
@@ -153,12 +156,20 @@ public class PhysicalObject {
         this.dimension = dimension;
     }
 
-    public Point getVelocity() {
-        return velocity;
+    public Double getVelocity_x() {
+        return velocity_x;
     }
 
-    public void setVelocity(Point velocity) {
-        this.velocity = velocity;
+    public void setVelocity_x(Double velocity_x) {
+        this.velocity_x = velocity_x;
+    }
+
+    public Double getVelocity_y() {
+        return velocity_y;
+    }
+
+    public void setVelocity_y(Double velocity_y) {
+        this.velocity_y = velocity_y;
     }
 
     public ImageView getImageView() {
