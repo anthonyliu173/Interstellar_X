@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import com.anthony.interstellar_x.App;
 import com.anthony.interstellar_x.Constants;
 import com.anthony.interstellar_x.R;
+import com.anthony.interstellar_x.ScreenDimension;
 
 import java.util.List;
 
@@ -41,7 +42,11 @@ public class PhysicalObject {
         if(this instanceof Blackhole && !App.BLACKHOLE_MOVABLE){
             return;
         }
+
         position.set(position.x + (velocity.x * Constants.TIME_CONSTANT), position.y + (velocity.y * Constants.TIME_CONSTANT));
+        imageView.setX(position.x);
+        imageView.setY(position.y);
+        checkBounce();
     }
 
     public void updateVelocity(List<PhysicalObject> visibleObjects){
@@ -64,6 +69,7 @@ public class PhysicalObject {
 
         velocity.set(velocity.x + (acc_x * Constants.TIME_CONSTANT), velocity.y + (acc_y * Constants.TIME_CONSTANT));
 
+        checkBounce();
     }
 
     /**
@@ -93,6 +99,34 @@ public class PhysicalObject {
         }
 
         return new Point(force_x, force_y);
+    }
+
+    private void checkBounce(){
+
+        if( position.x < 0 || (position.x + dimension.x) > ScreenDimension.getScreenWidth()){
+            velocity.x = (int)(Constants.BOUNCE_COEFFICIENT * velocity.x);
+        }
+
+        if( position.y < 0 || (position.y + dimension.y) > ScreenDimension.getScreenHeight()){
+            velocity.y = (int)(Constants.BOUNCE_COEFFICIENT * velocity.y);
+        }
+
+        if( position.x < 0){
+            position.set(1, position.y);
+        }
+
+        if( (position.x + dimension.x) > ScreenDimension.getScreenWidth()){
+            position.set(ScreenDimension.getScreenWidth() - dimension.x - 1, position.y);
+        }
+
+        if( position.y < 0){
+            position.set(position.x, 1);
+        }
+
+        if( (position.y + dimension.y) > ScreenDimension.getScreenHeight()){
+            position.set(position.x, ScreenDimension.getScreenHeight() - dimension.y - 1);
+        }
+
     }
 
     public int getMass() {

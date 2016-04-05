@@ -1,6 +1,7 @@
 package com.anthony.interstellar_x;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,9 +14,7 @@ import com.anthony.interstellar_x.Interstellar_Objects.Spacecraft;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-    private final long UPDATE_INTERVAL = 100; // Update sensor value every 100 ms
-
-    private long lastUpdate = 0;
+//    private final long UPDATE_INTERVAL = 10; // Update sensor value every 100 ms
 
     private RelativeLayout rlBackground;
     private Spacecraft spacecraft;
@@ -33,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         rlBackground = (RelativeLayout)findViewById(R.id.rlBackground);
         rlBackground.addView(spacecraft.getImageView());
 
+        spacecraft.setVelocity(new Point(80, 40));
+
         updateInitialPosition();
 
         setSensor();
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onResume() {
         super.onResume();
 
-        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
 
     }
 
@@ -76,12 +77,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
 
-            long curTime = System.currentTimeMillis();
+//            long curTime = System.currentTimeMillis();
+//
+//            if ((curTime - lastUpdate) > UPDATE_INTERVAL) {
+//                lastUpdate = curTime;
+//                // TODO perform PhysicalObjects update
+//                spacecraft.updatePosition();
+//            }
 
-            if ((curTime - lastUpdate) > UPDATE_INTERVAL) {
-                lastUpdate = curTime;
-                // TODO perform PhysicalObjects update
-            }
+            spacecraft.updatePosition();
+
         }
 
     }
