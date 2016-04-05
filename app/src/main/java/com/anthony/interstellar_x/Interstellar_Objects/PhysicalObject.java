@@ -3,6 +3,7 @@ package com.anthony.interstellar_x.Interstellar_Objects;
 import android.content.Context;
 import android.graphics.Point;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.anthony.interstellar_x.App;
 import com.anthony.interstellar_x.Constants;
@@ -24,8 +25,8 @@ public class PhysicalObject {
 
     protected void setImage(Context context){
         this.imageView = new ImageView(context);
-        this.imageView.getLayoutParams().width = dimension.x;
-        this.imageView.getLayoutParams().height = dimension.y;
+        this.imageView.setLayoutParams(new LinearLayout.LayoutParams(dimension.x, dimension.y));
+        this.imageView.requestLayout();
 
         if(this instanceof Spacecraft){
             this.imageView.setBackgroundResource(R.drawable.spacecraft);
@@ -108,6 +109,14 @@ public class PhysicalObject {
 
     public void setPosition(Point position) {
         this.position = position;
+    }
+
+    public Point getDimension() {
+        return dimension;
+    }
+
+    public void setDimension(Point dimension) {
+        this.dimension = dimension;
     }
 
     public Point getVelocity() {
