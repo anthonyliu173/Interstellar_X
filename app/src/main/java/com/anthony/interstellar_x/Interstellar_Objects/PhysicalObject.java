@@ -48,6 +48,8 @@ public class PhysicalObject {
         imageView.setX(position.x - dimension.x / 2);
         imageView.setY(position.y - dimension.y / 2);
 
+        checkBounce();
+
     }
 
     public void updateVelocity(List<PhysicalObject> visibleObjects, double sensor_x, double sensor_y){
@@ -68,7 +70,6 @@ public class PhysicalObject {
         double acc_x = (total_force_x / mass) * Constants.TIME_CONSTANT;
         double acc_y = (total_force_y / mass) * Constants.TIME_CONSTANT;
 
-//        velocity.set(velocity.x + (acc_x * Constants.TIME_CONSTANT), velocity.y + (acc_y * Constants.TIME_CONSTANT));
         velocity_x = velocity_x + (acc_x * Constants.TIME_CONSTANT);
         velocity_y = velocity_y + (acc_y * Constants.TIME_CONSTANT);
 
@@ -93,11 +94,11 @@ public class PhysicalObject {
         int force_x = (int)(force_scale * distance_x / distance_scale);
         int force_y = (int)(force_scale * distance_y / distance_scale);
 
-        if(position.x < targetPosition.x){
+        if(position.x > targetPosition.x){
             force_x = -force_x;
         }
 
-        if(position.y < targetPosition.y){
+        if(position.y > targetPosition.y){
             force_y = -force_y;
         }
 
