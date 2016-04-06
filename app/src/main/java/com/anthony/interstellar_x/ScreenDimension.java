@@ -22,7 +22,7 @@ public class ScreenDimension {
     }
 
     public static int getScreenHeight() {
-        return ScreenHeight - NavigationBarHeight - StatusBarHeight;
+        return ScreenHeight + NavigationBarHeight;
     }
 
     public static void setScreenHeight(int screenHeight) {
