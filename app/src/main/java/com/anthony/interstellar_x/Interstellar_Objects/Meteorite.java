@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 
 import com.anthony.interstellar_x.Constants;
-import com.anthony.interstellar_x.MainActivity;
+import com.anthony.interstellar_x.GamingActivity;
 import com.anthony.interstellar_x.OnBlackholeHorizonEvent;
 import com.anthony.interstellar_x.ScreenDimension;
 
@@ -30,7 +30,7 @@ public class Meteorite extends PhysicalObject {
      * A new Meteorite object with random size, position and velocity
      * */
     public Meteorite(Context context){
-        setBlackholeListener((MainActivity)context);
+        setBlackholeListener((GamingActivity)context);
         this.size = METEORITE_SIZE.getRandom();
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
@@ -44,7 +44,7 @@ public class Meteorite extends PhysicalObject {
      * A specified Meteorite object with random position and velocity
      * */
     public Meteorite(Context context, METEORITE_SIZE size) {
-        setBlackholeListener((MainActivity)context);
+        setBlackholeListener((GamingActivity)context);
         this.size = size;
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
@@ -58,7 +58,7 @@ public class Meteorite extends PhysicalObject {
      * A specified Meteorite object with specified position and velocity
      * */
     public Meteorite(Context context, METEORITE_SIZE size, int position_x, int position_y, int velocity_x, int velocity_y) {
-        setBlackholeListener((MainActivity)context);
+        setBlackholeListener((GamingActivity)context);
         this.size = size;
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
