@@ -24,8 +24,7 @@ public class Collision {
                                 ((physicalObjects.get(j) instanceof Spacecraft || physicalObjects.get(j) instanceof Meteorite) && physicalObjects.get(i) instanceof Blackhole)) {
                             if(physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(j) instanceof Spacecraft){
                                 ((Spacecraft) physicalObjects.get(i)).blackholeCollision();
-                            }
-                            if(physicalObjects.get(i) instanceof Meteorite || physicalObjects.get(j) instanceof Meteorite){
+                            }else if(physicalObjects.get(i) instanceof Meteorite || physicalObjects.get(j) instanceof Meteorite){
                                 ((Meteorite) physicalObjects.get(i)).blackholeCollision();
                             }
                         } else {
