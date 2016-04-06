@@ -34,7 +34,8 @@ public class PhysicalObject {
             this.imageView.setBackgroundResource(R.drawable.spacecraft);
         }else if(this instanceof Blackhole){
             this.imageView.setBackgroundResource(R.drawable.blackhole);
-
+        }else if(this instanceof Meteorite){
+            this.imageView.setBackgroundResource(R.drawable.spacecraft);
         }
     }
 
@@ -44,12 +45,11 @@ public class PhysicalObject {
             return;
         }
 
-        position.set((int)(position.x + (velocity_x * Constants.TIME_CONSTANT)), (int)(position.y + (velocity_y * Constants.TIME_CONSTANT)));
+        position.set((int) (position.x + (velocity_x * Constants.TIME_CONSTANT)), (int) (position.y + (velocity_y * Constants.TIME_CONSTANT)));
         imageView.setX(position.x - dimension.x / 2);
         imageView.setY(position.y - dimension.y / 2);
 
-        checkBounce();
-
+//        checkBounce();
     }
 
     public void updateVelocity(List<PhysicalObject> visibleObjects, double sensor_x, double sensor_y){

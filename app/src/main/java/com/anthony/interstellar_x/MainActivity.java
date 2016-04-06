@@ -24,10 +24,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private FrameLayout rlBackground;
-    private Spacecraft spacecraft;
-    private Meteorite meteorite;
-    private Blackhole blackhole;
-    private Blackhole blackhole1;
+    private List<PhysicalObject> physicalObjects = new ArrayList<>();
+    private List<PhysicalObject> gravityList;
+    private List<PhysicalObject> collisionList;
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -40,19 +39,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mHideHandler.post(mHideRunnable);
         mHideHandler.post(mHidePart2Runnable);
 
-        spacecraft = new Spacecraft(MainActivity.this);
-        meteorite = new Meteorite(MainActivity.this, Meteorite.METEORITE_SIZE.TALL);
-        blackhole = new Blackhole(MainActivity.this, Constants.BLACKHOLE_MASS, ScreenDimension.getScreenWidth()*3/4,
-                ScreenDimension.getScreenHeight()*3/4, 0.0, 0.0);
-        blackhole1 = new Blackhole(MainActivity.this, Constants.BLACKHOLE_MASS, ScreenDimension.getScreenWidth()/4,
-                ScreenDimension.getScreenHeight()/4, 0.0, 0.0);
+        physicalObjects.add(new Spacecraft(MainActivity.this));
+        physicalObjects.add(new Meteorite(MainActivity.this, Meteorite.METEORITE_SIZE.TALL));
+        physicalObjects.add(new Blackhole(MainActivity.this, Constants.BLACKHOLE_MASS, ScreenDimension.getScreenWidth() * 3 / 4,
+                ScreenDimension.getScreenHeight() * 3 / 4, 0.0, 0.0));
+        physicalObjects.add(new Blackhole(MainActivity.this, Constants.BLACKHOLE_MASS, ScreenDimension.getScreenWidth() / 4,
+                ScreenDimension.getScreenHeight() / 4, 0.0, 0.0));
+        
+        gravityList = extractBlackholes();
+        collisionList = extraCollisionList();
 
         rlBackground = (FrameLayout)findViewById(R.id.rlBackground);
-        rlBackground.addView(spacecraft.getImageView());
-        rlBackground.addView(meteorite.getImageView());
-        rlBackground.addView(blackhole.getImageView());
-        rlBackground.addView(blackhole1.getImageView());
 
+        addPhysicalObjectsToView();
         updateInitialPosition();
 
         setSensor();
@@ -62,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
+
+        mHideHandler.post(mHideRunnable);
+        mHideHandler.post(mHidePart2Runnable);
 
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
 
@@ -75,15 +77,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    private void addPhysicalObjectsToView(){
+        for(PhysicalObject physicalObject : physicalObjects){
+            rlBackground.addView(physicalObject.getImageView());
+        }
+    }
+
     private void updateInitialPosition(){
-        spacecraft.getImageView().setX(spacecraft.getPosition().x - spacecraft.getDimension().x / 2);
-        spacecraft.getImageView().setY(spacecraft.getPosition().y - spacecraft.getDimension().y / 2);
-        blackhole.getImageView().setX(blackhole.getPosition().x - blackhole.getDimension().x / 2);
-        blackhole.getImageView().setY(blackhole.getPosition().y - blackhole.getDimension().y / 2);
-        blackhole1.getImageView().setX(blackhole1.getPosition().x - blackhole1.getDimension().x / 2);
-        blackhole1.getImageView().setY(blackhole1.getPosition().y - blackhole1.getDimension().y / 2);
-        meteorite.getImageView().setX(meteorite.getPosition().x - meteorite.getDimension().x / 2);
-        meteorite.getImageView().setY(meteorite.getPosition().y - meteorite.getDimension().y / 2);
+        for(PhysicalObject physicalObject : physicalObjects){
+            physicalObject.getImageView().setX(physicalObject.getPosition().x - physicalObject.getDimension().x / 2);
+            physicalObject.getImageView().setY(physicalObject.getPosition().y - physicalObject.getDimension().y / 2);
+        }
     }
 
     private void setSensor(){
@@ -102,18 +106,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
 
-            List<PhysicalObject> gravityList = new ArrayList<>();
-            gravityList.add(blackhole);
-            gravityList.add(blackhole1);
+            for(PhysicalObject physicalObject : physicalObjects){
+                if(physicalObject instanceof Spacecraft){
+                    physicalObject.updateVelocity(gravityList, -x, y);
+                }
+                if(physicalObject instanceof Meteorite){
+                    physicalObject.updateVelocity(gravityList, 0, 0);
+                }
+            }
 
-            List<PhysicalObject> collisionList = new ArrayList<>();
-            collisionList.add(spacecraft);
-            collisionList.add(meteorite);
-
-            spacecraft.updateVelocity(gravityList, -x, y);
-            meteorite.updateVelocity(gravityList, 0, 0);
-            spacecraft.updatePosition();
-            meteorite.updatePosition();
+            for(PhysicalObject physicalObject : physicalObjects){
+                if(physicalObject instanceof Spacecraft || physicalObject instanceof Meteorite){
+                    physicalObject.updatePosition();
+                }
+            }
 
             Collision.collideAnalysis(collisionList);
 
@@ -124,6 +130,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private List<PhysicalObject> extractBlackholes(){
+        List<PhysicalObject> blackholes = new ArrayList<>();
+        for(PhysicalObject physicalObject : physicalObjects){
+            if (physicalObject instanceof Blackhole){
+                blackholes.add(physicalObject);
+            }
+        }
+        return blackholes;
+    }
+
+    private List<PhysicalObject> extraCollisionList(){
+        List<PhysicalObject> collisions = new ArrayList<>();
+        for(PhysicalObject physicalObject : physicalObjects){
+            if (!(physicalObject instanceof Blackhole)){
+                collisions.add(physicalObject);
+            }
+        }
+        return collisions;
     }
 
     private void hide() {
