@@ -8,8 +8,13 @@ import com.anthony.interstellar_x.Interstellar_Objects.PhysicalObject;
  * When Spacecraft or Meteorite gets too close to blackhole (passing the event horizon),
  * it will be gone ...
  */
-public interface OnBlackholeHorizonEvent {
+public interface OnBlackholeHorizonEventListener {
 
-    void Goodbye(PhysicalObject object);
+    /**
+     * Say goodbye to whatever is sucked into blackhole
+     *
+     * @param object - the poor object
+     * */
+    void GoodBye(PhysicalObject object);
 
 }

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by anthonyliu on 2016/4/6.
  */
-public class GamingActivity extends AppCompatActivity implements SensorEventListener, OnBlackholeHorizonEvent{
+public class GamingActivity extends AppCompatActivity implements SensorEventListener, OnBlackholeHorizonEventListener, OnMeteoriteByPassListener {
 
     public FrameLayout rlBackground;
     public List<PhysicalObject> physicalObjects = new ArrayList<>();
@@ -32,6 +32,12 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
     public SensorManager senSensorManager;
     public Sensor senAccelerometer;
+
+    /**
+     * PhysicalObjects that will be removed after each sensor update
+     *
+     * */
+    private List<PhysicalObject> removingObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,8 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
 
+            removingObject = new ArrayList<>();
+
             Collision.collideAnalysis(physicalObjects);
 
             for(PhysicalObject physicalObject : physicalObjects){
@@ -122,6 +130,17 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
                 if(physicalObject instanceof Spacecraft || physicalObject instanceof Meteorite){
                     physicalObject.updatePosition();
                 }
+            }
+
+            for(PhysicalObject physicalObject : physicalObjects){
+                if(physicalObject instanceof Meteorite){
+                    physicalObject.isInBound();
+                }
+            }
+
+            for(PhysicalObject physicalObject : removingObject){
+                physicalObjects.remove(physicalObject);
+                rlBackground.removeView(physicalObject.getImageView());
             }
 
         }
@@ -143,10 +162,15 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     }
 
     @Override
-    public void Goodbye(PhysicalObject object) {
-        //TODO "remove" animation
-        rlBackground.removeView(object.getImageView());
-        physicalObjects.remove(object);
+    public void GoodBye(PhysicalObject object) {
+        System.out.println("GoodBye");
+        removingObject.add(object);
+    }
+
+    @Override
+    public void LongGone(Meteorite meteorite) {
+        System.out.println("LongGone");
+        removingObject.add(meteorite);
     }
 
     private void hide() {

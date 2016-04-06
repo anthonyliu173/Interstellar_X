@@ -5,14 +5,14 @@ import android.graphics.Point;
 
 import com.anthony.interstellar_x.Constants;
 import com.anthony.interstellar_x.GamingActivity;
-import com.anthony.interstellar_x.OnBlackholeHorizonEvent;
+import com.anthony.interstellar_x.OnBlackholeHorizonEventListener;
 
 /**
  * Created by anthonyliu on 2016/4/3.
  */
 public class Spacecraft extends PhysicalObject{
 
-    private OnBlackholeHorizonEvent blackholeListener;
+    private OnBlackholeHorizonEventListener blackholeListener;
 
     /**
      * Default spacecraft object with position at origin, no velocity and default mass.
@@ -49,14 +49,14 @@ public class Spacecraft extends PhysicalObject{
     }
 
     public void blackholeCollision(){
-        blackholeListener.Goodbye(this);
+        blackholeListener.GoodBye(this);
     }
 
-    public OnBlackholeHorizonEvent getBlackholeListener() {
+    public OnBlackholeHorizonEventListener getBlackholeListener() {
         return blackholeListener;
     }
 
-    public void setBlackholeListener(OnBlackholeHorizonEvent blackholeListener) {
+    public void setBlackholeListener(OnBlackholeHorizonEventListener blackholeListener) {
         this.blackholeListener = blackholeListener;
     }
 }

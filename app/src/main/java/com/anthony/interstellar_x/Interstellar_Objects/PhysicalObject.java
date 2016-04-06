@@ -49,7 +49,6 @@ public class PhysicalObject {
         imageView.setX(position.x - dimension.x / 2);
         imageView.setY(position.y - dimension.y / 2);
 
-//        checkBounce();
     }
 
     public void updateVelocity(List<PhysicalObject> visibleObjects, double sensor_x, double sensor_y){
@@ -73,7 +72,39 @@ public class PhysicalObject {
         velocity_x = velocity_x + (acc_x * Constants.TIME_CONSTANT);
         velocity_y = velocity_y + (acc_y * Constants.TIME_CONSTANT);
 
-        checkBounce();
+        if(velocity_x > Constants.MAX_VECTOR_VELOCITY){
+            velocity_x = Constants.MAX_VECTOR_VELOCITY;
+        }
+
+        if(velocity_y > Constants.MAX_VECTOR_VELOCITY){
+            velocity_y = Constants.MAX_VECTOR_VELOCITY;
+        }
+
+        // Meteorites and Blackholes do not bounce
+        if(this instanceof Spacecraft){
+            checkBounce();
+        }
+    }
+
+    public void isInBound(){
+        if(this instanceof Meteorite){
+            if(this.getPosition().x + 3*this.getDimension().x < 0){
+                ((Meteorite)this).meteoriteGone();
+                return;
+            }
+            if(this.getPosition().y + 3*this.getDimension().y < 0){
+                ((Meteorite)this).meteoriteGone();
+                return;
+            }
+            if(this.getPosition().x - 2*this.getDimension().x > ScreenDimension.getScreenWidth()){
+                ((Meteorite)this).meteoriteGone();
+                return;
+            }
+            if(this.getPosition().y - 2*this.getDimension().y > ScreenDimension.getScreenHeight()){
+                ((Meteorite)this).meteoriteGone();
+                return;
+            }
+        }
     }
 
     /**

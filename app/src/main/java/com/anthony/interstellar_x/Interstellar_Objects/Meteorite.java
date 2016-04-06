@@ -5,7 +5,8 @@ import android.graphics.Point;
 
 import com.anthony.interstellar_x.Constants;
 import com.anthony.interstellar_x.GamingActivity;
-import com.anthony.interstellar_x.OnBlackholeHorizonEvent;
+import com.anthony.interstellar_x.OnBlackholeHorizonEventListener;
+import com.anthony.interstellar_x.OnMeteoriteByPassListener;
 import com.anthony.interstellar_x.ScreenDimension;
 
 /**
@@ -13,7 +14,8 @@ import com.anthony.interstellar_x.ScreenDimension;
  */
 public class Meteorite extends PhysicalObject {
 
-    private OnBlackholeHorizonEvent blackholeListener;
+    private OnBlackholeHorizonEventListener blackholeListener;
+    private OnMeteoriteByPassListener meteoriteByPassListener;
 
     public enum METEORITE_SIZE {
         SHORT, TALL, GRANDE, VENTI;
@@ -30,6 +32,7 @@ public class Meteorite extends PhysicalObject {
      * A new Meteorite object with random size, position and velocity
      * */
     public Meteorite(Context context){
+        setMeteoriteByPassListener((GamingActivity)context);
         setBlackholeListener((GamingActivity)context);
         this.size = METEORITE_SIZE.getRandom();
         this.mass = findMass(size);
@@ -44,6 +47,7 @@ public class Meteorite extends PhysicalObject {
      * A specified Meteorite object with random position and velocity
      * */
     public Meteorite(Context context, METEORITE_SIZE size) {
+        setMeteoriteByPassListener((GamingActivity)context);
         setBlackholeListener((GamingActivity)context);
         this.size = size;
         this.mass = findMass(size);
@@ -58,6 +62,7 @@ public class Meteorite extends PhysicalObject {
      * A specified Meteorite object with specified position and velocity
      * */
     public Meteorite(Context context, METEORITE_SIZE size, int position_x, int position_y, int velocity_x, int velocity_y) {
+        setMeteoriteByPassListener((GamingActivity)context);
         setBlackholeListener((GamingActivity)context);
         this.size = size;
         this.mass = findMass(size);
@@ -112,15 +117,26 @@ public class Meteorite extends PhysicalObject {
     }
 
     public void blackholeCollision(){
-        blackholeListener.Goodbye(this);
+        blackholeListener.GoodBye(this);
     }
 
-    public OnBlackholeHorizonEvent getBlackholeListener() {
+    public OnBlackholeHorizonEventListener getBlackholeListener() {
         return blackholeListener;
     }
 
-    public void setBlackholeListener(OnBlackholeHorizonEvent blackholeListener) {
+    public void setBlackholeListener(OnBlackholeHorizonEventListener blackholeListener) {
         this.blackholeListener = blackholeListener;
     }
 
+    public void meteoriteGone(){
+        meteoriteByPassListener.LongGone(this);
+    }
+
+    public OnMeteoriteByPassListener getMeteoriteByPassListener() {
+        return meteoriteByPassListener;
+    }
+
+    public void setMeteoriteByPassListener(OnMeteoriteByPassListener meteoriteByPassListener) {
+        this.meteoriteByPassListener = meteoriteByPassListener;
+    }
 }
