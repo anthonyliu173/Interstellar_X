@@ -21,12 +21,11 @@ import com.anthony.interstellar_x.Interstellar_Objects.Spacecraft;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener, OnBlackholeHorizonEvent {
 
     private FrameLayout rlBackground;
     private List<PhysicalObject> physicalObjects = new ArrayList<>();
     private List<PhysicalObject> gravityList;
-    private List<PhysicalObject> collisionList;
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -45,9 +44,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 ScreenDimension.getScreenHeight() * 3 / 4, 0.0, 0.0));
         physicalObjects.add(new Blackhole(MainActivity.this, Constants.BLACKHOLE_MASS, ScreenDimension.getScreenWidth() / 4,
                 ScreenDimension.getScreenHeight() / 4, 0.0, 0.0));
-        
+
         gravityList = extractBlackholes();
-        collisionList = extraCollisionList();
 
         rlBackground = (FrameLayout)findViewById(R.id.rlBackground);
 
@@ -121,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
             }
 
-            Collision.collideAnalysis(collisionList);
+            Collision.collideAnalysis(physicalObjects);
 
         }
 
@@ -142,14 +140,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return blackholes;
     }
 
-    private List<PhysicalObject> extraCollisionList(){
-        List<PhysicalObject> collisions = new ArrayList<>();
-        for(PhysicalObject physicalObject : physicalObjects){
-            if (!(physicalObject instanceof Blackhole)){
-                collisions.add(physicalObject);
-            }
-        }
-        return collisions;
+    @Override
+    public void Goodbye(PhysicalObject object) {
+        //TODO remove objects from view
+        System.out.println("GOODBYE!!!");
+//        physicalObjects.remove(physicalObjects);
+//        if(physicalObjects instanceof Spacecraft || physicalObjects instanceof Meteorite){
+//            collisionList.remove(physicalObjects);
+//        }
     }
 
     private void hide() {

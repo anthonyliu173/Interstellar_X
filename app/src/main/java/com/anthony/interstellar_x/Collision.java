@@ -1,9 +1,10 @@
 package com.anthony.interstellar_x;
 
 import com.anthony.interstellar_x.Interstellar_Objects.Blackhole;
+import com.anthony.interstellar_x.Interstellar_Objects.Meteorite;
 import com.anthony.interstellar_x.Interstellar_Objects.PhysicalObject;
+import com.anthony.interstellar_x.Interstellar_Objects.Spacecraft;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -11,23 +12,25 @@ import java.util.List;
  */
 public class Collision {
 
-    public static void collideAnalysis(List<PhysicalObject> physicalObjects){
+    public static void collideAnalysis(List<PhysicalObject> physicalObjects) {
 
-        // Remove blackholes from collide analysis
-        for (Iterator<PhysicalObject> iter = physicalObjects.listIterator(); iter.hasNext(); ) {
-            PhysicalObject physicalObject = iter.next();
-            if (physicalObject instanceof Blackhole) {
-                iter.remove();
-            }
-        }
-
-        for(int i = 0; i < physicalObjects.size(); i++){
+        for (int i = 0; i < physicalObjects.size(); i++) {
             // All but last physicalObject is processed
-            if(i < (physicalObjects.size() -1)){
-                for(int j = i + 1; j < physicalObjects.size(); j++){
-                    if(isColliding(physicalObjects.get(i), physicalObjects.get(j))){
-                        //TODO Update velocities of two physicalObjects
-                        processCollision(physicalObjects.get(i), physicalObjects.get(j));
+            if (i < (physicalObjects.size() - 1)) {
+                for (int j = i + 1; j < physicalObjects.size(); j++) {
+                    if (isColliding(physicalObjects.get(i), physicalObjects.get(j))) {
+                        // PhysicalObject is sucked into a blackhole 啾咪～
+                        if (((physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(i) instanceof Meteorite) && physicalObjects.get(j) instanceof Blackhole) ||
+                                ((physicalObjects.get(j) instanceof Spacecraft || physicalObjects.get(j) instanceof Meteorite) && physicalObjects.get(i) instanceof Blackhole)) {
+                            if(physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(j) instanceof Spacecraft){
+                                ((Spacecraft) physicalObjects.get(i)).blackholeCollision();
+                            }
+                            if(physicalObjects.get(i) instanceof Meteorite || physicalObjects.get(j) instanceof Meteorite){
+                                ((Meteorite) physicalObjects.get(i)).blackholeCollision();
+                            }
+                        } else {
+                            processCollision(physicalObjects.get(i), physicalObjects.get(j));
+                        }
                     }
                 }
             }
@@ -37,15 +40,15 @@ public class Collision {
 
     /**
      * Check if two objects are colliding
-     * */
-    private static boolean isColliding(PhysicalObject object1, PhysicalObject object2){
+     */
+    private static boolean isColliding(PhysicalObject object1, PhysicalObject object2) {
         boolean isColliding = false;
 
         double distance = Math.sqrt(Math.pow(object1.getPosition().x - object2.getPosition().x, 2)
                 + Math.pow(object1.getPosition().y - object2.getPosition().y, 2));
         double sumOfRadius = object1.getDimension().x / 2 + object2.getDimension().x / 2;
 
-        if(distance <= sumOfRadius){
+        if (distance <= sumOfRadius) {
             isColliding = true;
         }
 
@@ -53,7 +56,7 @@ public class Collision {
     }
 
     // collision formula can be found here http://www.real-world-physics-problems.com/elastic-collision.html
-    private static void processCollision(PhysicalObject object1, PhysicalObject object2){
+    private static void processCollision(PhysicalObject object1, PhysicalObject object2) {
         double v1_x_knot = object1.getVelocity_x();
         double v1_y_knot = object1.getVelocity_y();
         double v2_x_knot = object2.getVelocity_x();
@@ -62,22 +65,22 @@ public class Collision {
         double v1_y_prime = velocityExchange(object1, object2, v1_y_knot, v2_y_knot);
         double v2_x_prime = velocityExchange(object2, object1, v2_x_knot, v1_x_knot);
         double v2_y_prime = velocityExchange(object2, object1, v2_y_knot, v1_y_knot);
-        object1.setVelocity_x(Constants.COLLIDE_COEFFICIENT*v1_x_prime);
-        object1.setVelocity_y(Constants.COLLIDE_COEFFICIENT*v1_y_prime);
-        object2.setVelocity_x(Constants.COLLIDE_COEFFICIENT*v2_x_prime);
-        object2.setVelocity_y(Constants.COLLIDE_COEFFICIENT*v2_y_prime);
+        object1.setVelocity_x(Constants.COLLIDE_COEFFICIENT * v1_x_prime);
+        object1.setVelocity_y(Constants.COLLIDE_COEFFICIENT * v1_y_prime);
+        object2.setVelocity_x(Constants.COLLIDE_COEFFICIENT * v2_x_prime);
+        object2.setVelocity_y(Constants.COLLIDE_COEFFICIENT * v2_y_prime);
     }
 
-    private static double velocityExchange(PhysicalObject subject, PhysicalObject target, double subject_v, double target_v){
+    private static double velocityExchange(PhysicalObject subject, PhysicalObject target, double subject_v, double target_v) {
         return (getM1(subject.getMass(), target.getMass()) * subject_v) + (getM2(subject.getMass(), target.getMass()) * target_v);
     }
 
-    private static double getM1(int mass_1, int mass_2){
-        return ((double)(mass_1 - mass_2))/(mass_1 + mass_2);
+    private static double getM1(int mass_1, int mass_2) {
+        return ((double) (mass_1 - mass_2)) / (mass_1 + mass_2);
     }
 
-    private static double getM2(int mass_1, int mass_2){
-        return ((double)(2*mass_2))/(mass_1 + mass_2);
+    private static double getM2(int mass_1, int mass_2) {
+        return ((double) (2 * mass_2)) / (mass_1 + mass_2);
     }
 
 }

@@ -4,12 +4,16 @@ import android.content.Context;
 import android.graphics.Point;
 
 import com.anthony.interstellar_x.Constants;
+import com.anthony.interstellar_x.MainActivity;
+import com.anthony.interstellar_x.OnBlackholeHorizonEvent;
 import com.anthony.interstellar_x.ScreenDimension;
 
 /**
  * Created by anthonyliu on 2016/4/3.
  */
 public class Meteorite extends PhysicalObject {
+
+    private OnBlackholeHorizonEvent blackholeListener;
 
     public enum METEORITE_SIZE {
         SHORT, TALL, GRANDE, VENTI;
@@ -26,6 +30,7 @@ public class Meteorite extends PhysicalObject {
      * A new Meteorite object with random size, position and velocity
      * */
     public Meteorite(Context context){
+        setBlackholeListener((MainActivity)context);
         this.size = METEORITE_SIZE.getRandom();
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
@@ -39,6 +44,7 @@ public class Meteorite extends PhysicalObject {
      * A specified Meteorite object with random position and velocity
      * */
     public Meteorite(Context context, METEORITE_SIZE size) {
+        setBlackholeListener((MainActivity)context);
         this.size = size;
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
@@ -52,7 +58,7 @@ public class Meteorite extends PhysicalObject {
      * A specified Meteorite object with specified position and velocity
      * */
     public Meteorite(Context context, METEORITE_SIZE size, int position_x, int position_y, int velocity_x, int velocity_y) {
-
+        setBlackholeListener((MainActivity)context);
         this.size = size;
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
@@ -103,6 +109,18 @@ public class Meteorite extends PhysicalObject {
             default:
                 return Constants.METEORITE_MASS_SHORT_DIMENSION;
         }
+    }
+
+    public void blackholeCollision(){
+        blackholeListener.Goodbye(this);
+    }
+
+    public OnBlackholeHorizonEvent getBlackholeListener() {
+        return blackholeListener;
+    }
+
+    public void setBlackholeListener(OnBlackholeHorizonEvent blackholeListener) {
+        this.blackholeListener = blackholeListener;
     }
 
 }
