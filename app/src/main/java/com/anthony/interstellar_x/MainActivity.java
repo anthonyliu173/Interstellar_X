@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
 
+            Collision.collideAnalysis(physicalObjects);
+
             for(PhysicalObject physicalObject : physicalObjects){
                 if(physicalObject instanceof Spacecraft){
                     physicalObject.updateVelocity(gravityList, -x, y);
@@ -118,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     physicalObject.updatePosition();
                 }
             }
-
-            Collision.collideAnalysis(physicalObjects);
 
         }
 
@@ -142,12 +142,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void Goodbye(PhysicalObject object) {
-        //TODO remove objects from view
-        System.out.println("GOODBYE!!!");
-//        physicalObjects.remove(physicalObjects);
-//        if(physicalObjects instanceof Spacecraft || physicalObjects instanceof Meteorite){
-//            collisionList.remove(physicalObjects);
-//        }
+        //TODO "remove" animation
+        rlBackground.removeView(object.getImageView());
+        physicalObjects.remove(object);
     }
 
     private void hide() {
