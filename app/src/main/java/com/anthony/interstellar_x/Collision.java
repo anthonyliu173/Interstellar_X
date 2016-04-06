@@ -1,7 +1,9 @@
 package com.anthony.interstellar_x;
 
+import com.anthony.interstellar_x.Interstellar_Objects.Blackhole;
 import com.anthony.interstellar_x.Interstellar_Objects.PhysicalObject;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -11,22 +13,21 @@ public class Collision {
 
     public static void collideAnalysis(List<PhysicalObject> physicalObjects){
 
-//        // Remove blackholes from collide analysis
-//        for (Iterator<PhysicalObject> iter = physicalObjects.listIterator(); iter.hasNext(); ) {
-//            PhysicalObject physicalObject = iter.next();
-//            if (physicalObject instanceof Blackhole) {
-//                iter.remove();
-//            }
-//        }
+        // Remove blackholes from collide analysis
+        for (Iterator<PhysicalObject> iter = physicalObjects.listIterator(); iter.hasNext(); ) {
+            PhysicalObject physicalObject = iter.next();
+            if (physicalObject instanceof Blackhole) {
+                iter.remove();
+            }
+        }
 
         for(int i = 0; i < physicalObjects.size(); i++){
             // All but last physicalObject is processed
             if(i < (physicalObjects.size() -1)){
                 for(int j = i + 1; j < physicalObjects.size(); j++){
                     if(isColliding(physicalObjects.get(i), physicalObjects.get(j))){
-                        System.out.println("COLLIDING!!!");
                         //TODO Update velocities of two physicalObjects
-                        velocityExchange(physicalObjects.get(i), physicalObjects.get(j));
+                        processCollision(physicalObjects.get(i), physicalObjects.get(j));
                     }
                 }
             }
@@ -51,25 +52,32 @@ public class Collision {
         return isColliding;
     }
 
-    private static void velocityExchange(PhysicalObject object1, PhysicalObject object2){
-        double M1 = getM1(object1.getMass(), object2.getMass());
-        double M2 = getM2(object1.getMass(), object2.getMass());
-        double v1_x = object1.getVelocity_x();
-        double v1_y = object1.getVelocity_y();
-        double v2_x = object2.getVelocity_x();
-        double v2_y = object2.getVelocity_y();
-        object1.setVelocity_x(M2*v1_x + M1*v2_x);
-        object1.setVelocity_y(M2 * v1_y + M1 * v2_y);
-        object2.setVelocity_x(M1*v1_x - M2*v2_x);
-        object2.setVelocity_y(M1*v1_y - M2*v2_y);
+    // collision formula can be found here http://www.real-world-physics-problems.com/elastic-collision.html
+    private static void processCollision(PhysicalObject object1, PhysicalObject object2){
+        double v1_x_knot = object1.getVelocity_x();
+        double v1_y_knot = object1.getVelocity_y();
+        double v2_x_knot = object2.getVelocity_x();
+        double v2_y_knot = object2.getVelocity_y();
+        double v1_x_prime = velocityExchange(object1, object2, v1_x_knot, v2_x_knot);
+        double v1_y_prime = velocityExchange(object1, object2, v1_y_knot, v2_y_knot);
+        double v2_x_prime = velocityExchange(object2, object1, v2_x_knot, v1_x_knot);
+        double v2_y_prime = velocityExchange(object2, object1, v2_y_knot, v1_y_knot);
+        object1.setVelocity_x(Constants.COLLIDE_COEFFICIENT*v1_x_prime);
+        object1.setVelocity_y(Constants.COLLIDE_COEFFICIENT*v1_y_prime);
+        object2.setVelocity_x(Constants.COLLIDE_COEFFICIENT*v2_x_prime);
+        object2.setVelocity_y(Constants.COLLIDE_COEFFICIENT*v2_y_prime);
+    }
+
+    private static double velocityExchange(PhysicalObject subject, PhysicalObject target, double subject_v, double target_v){
+        return (getM1(subject.getMass(), target.getMass()) * subject_v) + (getM2(subject.getMass(), target.getMass()) * target_v);
     }
 
     private static double getM1(int mass_1, int mass_2){
-        return ((double)2*mass_1)/(mass_1 + mass_2);
+        return ((double)(mass_1 - mass_2))/(mass_1 + mass_2);
     }
 
     private static double getM2(int mass_1, int mass_2){
-        return ((double)(mass_1 - mass_2))/(mass_1 + mass_2);
+        return ((double)(2*mass_2))/(mass_1 + mass_2);
     }
 
 }
