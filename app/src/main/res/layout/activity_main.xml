@@ -20,6 +20,12 @@
         android:id="@+id/gridView"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_standard" />
+        android:layout_margin="@dimen/margin_standard"
+        android:numColumns="auto_fit"
+        android:gravity="center"
+        android:columnWidth="@dimen/grid_size"
+        android:horizontalSpacing="@dimen/margin_standard"
+        android:verticalSpacing="@dimen/margin_standard"
+        android:stretchMode="columnWidth"/>
 
 </RelativeLayout>

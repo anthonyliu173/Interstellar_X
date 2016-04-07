@@ -2,6 +2,8 @@ package com.anthony.interstellar_x;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 /**
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
+        initVar();
+        setView();
 
     }
 
@@ -36,6 +40,24 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         gridView = (GridView)findViewById(R.id.gridView);
 
+    }
+
+    private void initVar(){
+
+        gridAdapter = new LevelGrid(MainActivity.this, Levels);
+
+    }
+
+    private void setView(){
+
+        gridView.setAdapter(gridAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        
     }
 
     @Override
