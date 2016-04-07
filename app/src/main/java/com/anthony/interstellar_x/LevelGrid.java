@@ -14,10 +14,12 @@ public class LevelGrid extends BaseAdapter {
 
     private Context mContext;
     private final String[] levels;
+    private String[] level_names;
 
     public LevelGrid(Context context,String[] levels) {
         mContext = context;
         this.levels = levels;
+        level_names = context.getResources().getStringArray(R.array.LevelNames);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class LevelGrid extends BaseAdapter {
             grid = new View(mContext);
             grid = inflater.inflate(R.layout.grid_level, null);
             TextView textView = (TextView) grid.findViewById(R.id.txtLevel);
-            textView.setText(levels[position]);
+            textView.setText(level_names[position]);
 
         } else {
             grid = (View) convertView;

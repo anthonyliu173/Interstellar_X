@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="LevelNames">
+        <item>@string/andromeda</item>
+        <item>@string/milky_way</item>
+        <item>@string/taurus</item>
+        <item>@string/three_c_sevenfive</item>
+        <item>@string/cepheus</item>
+        <item>@string/eridanus</item>
+        <item>@string/fornax_A</item>
+        <item>@string/arp_twotwozero</item>
+        <item>@string/sirius</item>
+    </string-array>
+
+</resources>

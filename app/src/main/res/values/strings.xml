@@ -2,5 +2,14 @@
     <string name="app_name">Interstellar_X</string>
 
     <string name="interstellar">INTERSTELLAR</string>
+    <string name="andromeda">Andromeda</string>
+    <string name="milky_way">The Milky Way</string>
+    <string name="taurus">Taurus</string>
+    <string name="cepheus">Cepheus</string>
+    <string name="eridanus">Eridanus</string>
+    <string name="three_c_sevenfive">3C75</string>
+    <string name="fornax_A">Fornax A</string>
+    <string name="arp_twotwozero">Arp 220</string>
+    <string name="sirius">Sirius</string>
 
 </resources>
