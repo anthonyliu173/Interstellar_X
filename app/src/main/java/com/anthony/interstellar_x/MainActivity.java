@@ -1,21 +1,51 @@
 package com.anthony.interstellar_x;
 
-import com.anthony.interstellar_x.Interstellar_Objects.Blackhole;
-import com.anthony.interstellar_x.Interstellar_Objects.Meteorite;
-import com.anthony.interstellar_x.Interstellar_Objects.Spacecraft;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.GridView;
 
-public class MainActivity extends GamingActivity {
+/**
+ * Created by anthonyliu on 2016/4/7.
+ */
+public class MainActivity extends AppCompatActivity {
+
+    /**
+     * 9 levels in total, Level_P stands for practice
+     * */
+    private String[] Levels = {"Level_1", "Level_2", "Level_3", "Level_4", "Level_5", "Level_6", "Level_7", "Level_8", "Level_P"};
+
+    private GridView gridView;
+    private LevelGrid gridAdapter;
 
     @Override
-    protected void declarePhysicalObjects() {
-        super.declarePhysicalObjects();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        physicalObjects.add(new Spacecraft(this));
-        physicalObjects.add(new Meteorite(this, Meteorite.METEORITE_SIZE.TALL));
-        physicalObjects.add(new Blackhole(this, Constants.BLACKHOLE_MASS, ScreenDimension.getScreenWidth() * 3 / 4,
-                ScreenDimension.getScreenHeight() * 3 / 4, 0.0, 0.0));
-        physicalObjects.add(new Blackhole(this, Constants.BLACKHOLE_MASS, ScreenDimension.getScreenWidth() / 4,
-                ScreenDimension.getScreenHeight() / 4, 0.0, 0.0));
-        
+        initView();
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    private void initView(){
+
+        getSupportActionBar().hide();
+        gridView = (GridView)findViewById(R.id.gridView);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
 }
