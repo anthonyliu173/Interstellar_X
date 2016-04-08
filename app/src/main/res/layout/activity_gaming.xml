@@ -6,4 +6,47 @@
     android:background="#0099cc"
     tools:context="com.anthony.practice.FullscreenActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlLoading"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                style="@style/extraLargeHeaderWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="L"
+                android:id="@+id/textView2"
+                android:gravity="center_vertical" />
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/imgSpacecraft"
+                android:src="@drawable/spacecraft"
+                android:layout_weight="1"
+                android:interpolator="@android:anim/linear_interpolator"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_small" />
+
+            <TextView
+                style="@style/extraLargeHeaderWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="ADING..."
+                android:id="@+id/textView3"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </FrameLayout>
