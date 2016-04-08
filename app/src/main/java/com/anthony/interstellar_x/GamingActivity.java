@@ -115,7 +115,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     private void showLoading(){
         rlLoading.setVisibility(View.VISIBLE);
         ImageView imgSpacecraft = ((ImageView)findViewById(R.id.imgSpacecraft));
-        imgSpacecraft.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate));
+        imgSpacecraft.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_fast));
     }
 
     private void hideLoading(){
