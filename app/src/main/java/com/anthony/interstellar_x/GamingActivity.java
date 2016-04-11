@@ -49,7 +49,6 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         initView();
         showLoading();
         extentScreen();
-        extractBlackholes();
         addPhysicalObjectsToView();
 
         setSensor();
@@ -93,6 +92,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
                     rlBackground.addView(physicalObject.getImageView());
                 }
                 updateInitialPosition();
+                extractBlackholes();
                 hideLoading();
             }
         }, 4000);
