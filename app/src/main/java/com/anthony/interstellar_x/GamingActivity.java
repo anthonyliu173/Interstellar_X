@@ -36,6 +36,9 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
     private RelativeLayout rlLoading;
 
+    private RelativeLayout rlPreamble;
+    private FrameLayout flPreamble;
+
     /**
      * PhysicalObjects that will be removed after each sensor update
      */
@@ -50,16 +53,15 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         showLoading();
         extentScreen();
         addPhysicalObjectsToView();
-
-        setSensor();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 //        extentScreen();
-        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
-
+        if(senSensorManager != null && senAccelerometer != null) {
+            senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+        }
     }
 
     private void extentScreen() {
@@ -75,6 +77,8 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     private void initView() {
         rlBackground = (FrameLayout) findViewById(R.id.rlBackground);
         rlLoading = (RelativeLayout) findViewById(R.id.rlLoading);
+        rlPreamble = (RelativeLayout) findViewById(R.id.rlPreamble);
+        flPreamble = (FrameLayout) findViewById(R.id.flPreamble);
     }
 
     protected void declarePhysicalObjects() {
@@ -94,8 +98,9 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
                 updateInitialPosition();
                 extractBlackholes();
                 hideLoading();
+                showPreamble();
             }
-        }, 4000);
+        }, Constants.LOADING_TIME);
 
     }
 
@@ -120,6 +125,24 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
     private void hideLoading(){
         rlLoading.setVisibility(View.GONE);
+    }
+
+    private void showPreamble(){
+
+        rlPreamble.setVisibility(View.VISIBLE);
+        flPreamble.setVisibility(View.VISIBLE);
+        flPreamble.addView(PreambleHelper.findPreamble(this));
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rlPreamble.setVisibility(View.GONE);
+                flPreamble.setVisibility(View.GONE);
+                setSensor();
+            }
+        }, Constants.PREAMBLE_TIME);
+
     }
 
     @Override

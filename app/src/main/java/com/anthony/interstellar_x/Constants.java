@@ -38,6 +38,9 @@ public class Constants {
 
     public static final int RANDOM_VELOCITY_MAX = 7;
 
+    public static final int PREAMBLE_TIME = 3000;
+    public static final int LOADING_TIME = 4000;
+
     public static Point getRandomPositionOnScreen(int objectWidth, int objectHeight){
         Point position = new Point();
         int x = getRandom(objectWidth, ScreenDimension.getScreenWidth() - objectWidth);

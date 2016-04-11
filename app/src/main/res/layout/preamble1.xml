@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="@dimen/preamble_image_dimension"
+        android:layout_height="@dimen/preamble_image_dimension"
+        android:id="@+id/imgPreamble"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_big" />
+
+    <TextView
+        style="@style/mediumHeaderWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Showing Preamble 1"
+        android:id="@+id/txtPreamble"
+        android:layout_below="@+id/imgPreamble"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_big" />
+
+</RelativeLayout>
