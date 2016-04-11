@@ -1,6 +1,7 @@
 package com.anthony.interstellar_x;
 
 import com.anthony.interstellar_x.Interstellar_Objects.Blackhole;
+import com.anthony.interstellar_x.Interstellar_Objects.CheckPoint;
 import com.anthony.interstellar_x.Interstellar_Objects.Meteorite;
 import com.anthony.interstellar_x.Interstellar_Objects.PhysicalObject;
 import com.anthony.interstellar_x.Interstellar_Objects.Spacecraft;
@@ -19,16 +20,24 @@ public class Collision {
             if (i < (physicalObjects.size() - 1)) {
                 for (int j = i + 1; j < physicalObjects.size(); j++) {
                     if (isColliding(physicalObjects.get(i), physicalObjects.get(j))) {
-                        // PhysicalObject is sucked into a blackhole 啾咪～
-                        if (((physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(i) instanceof Meteorite) && physicalObjects.get(j) instanceof Blackhole) ||
-                                ((physicalObjects.get(j) instanceof Spacecraft || physicalObjects.get(j) instanceof Meteorite) && physicalObjects.get(i) instanceof Blackhole)) {
-                            if(physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(j) instanceof Spacecraft){
-                                ((Spacecraft) physicalObjects.get(i)).blackholeCollision();
-                            }else if(physicalObjects.get(i) instanceof Meteorite || physicalObjects.get(j) instanceof Meteorite){
-                                ((Meteorite) physicalObjects.get(i)).blackholeCollision();
+                        if (physicalObjects.get(i) instanceof CheckPoint || physicalObjects.get(j) instanceof CheckPoint) {
+                            if(physicalObjects.get(i) instanceof CheckPoint){
+                                ((CheckPoint) physicalObjects.get(i)).reachCheckPoint();
+                            }else{
+                                ((CheckPoint) physicalObjects.get(j)).reachCheckPoint();
                             }
                         } else {
-                            processCollision(physicalObjects.get(i), physicalObjects.get(j));
+                            // PhysicalObject is sucked into a blackhole 啾咪～
+                            if (((physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(i) instanceof Meteorite) && physicalObjects.get(j) instanceof Blackhole) ||
+                                    ((physicalObjects.get(j) instanceof Spacecraft || physicalObjects.get(j) instanceof Meteorite) && physicalObjects.get(i) instanceof Blackhole)) {
+                                if (physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(j) instanceof Spacecraft) {
+                                    ((Spacecraft) physicalObjects.get(i)).blackholeCollision();
+                                } else if (physicalObjects.get(i) instanceof Meteorite || physicalObjects.get(j) instanceof Meteorite) {
+                                    ((Meteorite) physicalObjects.get(i)).blackholeCollision();
+                                }
+                            } else {
+                                processCollision(physicalObjects.get(i), physicalObjects.get(j));
+                            }
                         }
                     }
                 }
@@ -44,7 +53,7 @@ public class Collision {
         boolean isColliding = false;
         boolean isBackhole = false; // if one object is blackhole, different boundary is used
 
-        if(object1 instanceof Blackhole || object2 instanceof Blackhole){
+        if (object1 instanceof Blackhole || object2 instanceof Blackhole) {
             isBackhole = true;
         }
 
@@ -52,13 +61,13 @@ public class Collision {
                 + Math.pow(object1.getPosition().y - object2.getPosition().y, 2));
         double sumOfRadius;
 
-        if(isBackhole){
-            if(object1 instanceof Blackhole){
+        if (isBackhole) {
+            if (object1 instanceof Blackhole) {
                 sumOfRadius = object1.getDimension().x / 4 + object2.getDimension().x / 2;
-            }else{
+            } else {
                 sumOfRadius = object1.getDimension().x / 2 + object2.getDimension().x / 4;
             }
-        }else{
+        } else {
             sumOfRadius = object1.getDimension().x / 2 + object2.getDimension().x / 2;
         }
 

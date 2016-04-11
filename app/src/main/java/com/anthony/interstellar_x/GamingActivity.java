@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by anthonyliu on 2016/4/6.
  */
-public class GamingActivity extends AppCompatActivity implements SensorEventListener, OnBlackholeHorizonEventListener, OnMeteoriteByPassListener {
+public class GamingActivity extends AppCompatActivity implements SensorEventListener, OnBlackholeHorizonEventListener, OnMeteoriteByPassListener, CheckPointReachedListener {
 
     public FrameLayout rlBackground;
     public List<PhysicalObject> physicalObjects = new ArrayList<>();
@@ -201,8 +201,10 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
                     gameOver();
                     break;
                 }
-                physicalObjects.remove(physicalObject);
-                rlBackground.removeView(physicalObject.getImageView());
+                if(physicalObject instanceof Meteorite){
+                    physicalObjects.remove(physicalObject);
+                    rlBackground.removeView(physicalObject.getImageView());
+                }
             }
 
         }
@@ -245,4 +247,8 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         }, Constants.GAMEOVER_TIME);
     }
 
+    @Override
+    public void CheckPointReached() {
+
+    }
 }

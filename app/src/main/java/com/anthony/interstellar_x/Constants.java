@@ -36,6 +36,8 @@ public class Constants {
     public static final int METEORITE_MASS_VENTI = 20;
     public static final int METEORITE_MASS_VENTI_DIMENSION = 130;
 
+    public static final int CHECKPOINT_DIMENSION = 160;
+
     public static final int RANDOM_VELOCITY_MAX = 7;
 
     public static final int GAMEOVER_TIME = 2000;
