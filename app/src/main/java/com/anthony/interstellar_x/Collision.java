@@ -42,10 +42,25 @@ public class Collision {
      */
     private static boolean isColliding(PhysicalObject object1, PhysicalObject object2) {
         boolean isColliding = false;
+        boolean isBackhole = false; // if one object is blackhole, different boundary is used
+
+        if(object1 instanceof Blackhole || object2 instanceof Blackhole){
+            isBackhole = true;
+        }
 
         double distance = Math.sqrt(Math.pow(object1.getPosition().x - object2.getPosition().x, 2)
                 + Math.pow(object1.getPosition().y - object2.getPosition().y, 2));
-        double sumOfRadius = object1.getDimension().x / 2 + object2.getDimension().x / 2;
+        double sumOfRadius;
+
+        if(isBackhole){
+            if(object1 instanceof Blackhole){
+                sumOfRadius = object1.getDimension().x / 4 + object2.getDimension().x / 2;
+            }else{
+                sumOfRadius = object1.getDimension().x / 2 + object2.getDimension().x / 4;
+            }
+        }else{
+            sumOfRadius = object1.getDimension().x / 2 + object2.getDimension().x / 2;
+        }
 
         if (distance <= sumOfRadius) {
             isColliding = true;
