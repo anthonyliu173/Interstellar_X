@@ -10,6 +10,8 @@ import com.anthony.interstellar_x.Constants;
 import com.anthony.interstellar_x.R;
 import com.anthony.interstellar_x.ScreenDimension;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -22,6 +24,8 @@ public class PhysicalObject {
     protected Point position;
     protected Double velocity_x = 0.0;
     protected Double velocity_y = 0.0;
+    protected Double speed = 0.0;
+    protected Double maxSpeed = 0.0;
 
     protected ImageView imageView;
 
@@ -78,6 +82,11 @@ public class PhysicalObject {
 
         if(velocity_y > Constants.MAX_VECTOR_VELOCITY){
             velocity_y = Constants.MAX_VECTOR_VELOCITY;
+        }
+
+        speed = round(Math.sqrt(Math.pow(velocity_x, 2) + Math.pow(velocity_y, 2)), 2);
+        if(speed > maxSpeed){
+            maxSpeed = speed;
         }
 
         // Meteorites and Blackholes do not bounce
@@ -219,6 +228,30 @@ public class PhysicalObject {
 
     public void setImageViewAnimation(){
 
+    }
+
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
+    }
+
+    public Double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(Double maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 }

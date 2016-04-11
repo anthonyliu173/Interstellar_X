@@ -38,6 +38,7 @@ public class Constants {
 
     public static final int RANDOM_VELOCITY_MAX = 7;
 
+    public static final int GAMEOVER_TIME = 2000;
     public static final int PREAMBLE_TIME = 3000;
     public static final int LOADING_TIME = 4000;
 

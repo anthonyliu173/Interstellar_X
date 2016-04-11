@@ -65,4 +65,35 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:padding="@dimen/margin_small">
+
+        <TextView
+            style="@style/mediumHeaderWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max Speed: "
+            android:id="@+id/txtMaxSpeed"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|left" />
+
+        <TextView
+            style="@style/mediumHeaderWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed: "
+            android:id="@+id/txtSpeed"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|left" />
+
+    </LinearLayout>
+
 </FrameLayout>

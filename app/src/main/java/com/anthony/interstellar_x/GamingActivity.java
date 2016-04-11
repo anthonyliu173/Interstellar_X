@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anthony.interstellar_x.Interstellar_Objects.Blackhole;
 import com.anthony.interstellar_x.Interstellar_Objects.Meteorite;
@@ -38,6 +40,9 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
     private RelativeLayout rlPreamble;
     private FrameLayout flPreamble;
+
+    private TextView txtSpeed;
+    private TextView txtMaxSpeed;
 
     /**
      * PhysicalObjects that will be removed after each sensor update
@@ -79,6 +84,8 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         rlLoading = (RelativeLayout) findViewById(R.id.rlLoading);
         rlPreamble = (RelativeLayout) findViewById(R.id.rlPreamble);
         flPreamble = (FrameLayout) findViewById(R.id.flPreamble);
+        txtSpeed = (TextView) findViewById(R.id.txtSpeed);
+        txtMaxSpeed = (TextView) findViewById(R.id.txtMaxSpeed);
     }
 
     protected void declarePhysicalObjects() {
@@ -169,6 +176,8 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             for (PhysicalObject physicalObject : physicalObjects) {
                 if (physicalObject instanceof Spacecraft) {
                     physicalObject.updateVelocity(gravityList, -x, y);
+                    txtSpeed.setText(String.format(getResources().getString(R.string.speed), String.valueOf(physicalObject.getSpeed())));
+                    txtMaxSpeed.setText(String.format(getResources().getString(R.string.max_speed), String.valueOf(physicalObject.getMaxSpeed())));
                 }
                 if (physicalObject instanceof Meteorite) {
                     physicalObject.updateVelocity(gravityList, 0, 0);
@@ -188,6 +197,10 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             }
 
             for (PhysicalObject physicalObject : removingObject) {
+                if(physicalObject instanceof Spacecraft){
+                    gameOver();
+                    break;
+                }
                 physicalObjects.remove(physicalObject);
                 rlBackground.removeView(physicalObject.getImageView());
             }
@@ -218,6 +231,18 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void LongGone(Meteorite meteorite) {
         removingObject.add(meteorite);
+    }
+
+    private void gameOver(){
+        senSensorManager.unregisterListener(this);
+        Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, Constants.GAMEOVER_TIME);
     }
 
 }

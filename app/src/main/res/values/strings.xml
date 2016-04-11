@@ -12,4 +12,7 @@
     <string name="arp_twotwozero">Arp 220</string>
     <string name="sirius">Sirius</string>
 
+    <string name="speed">Speed: %1$s</string>
+    <string name="max_speed">Max Speed: %1$s</string>
+
 </resources>
