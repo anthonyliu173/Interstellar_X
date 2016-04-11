@@ -61,9 +61,9 @@ public class PhysicalObject {
         double total_force_y = sensor_y * Constants.SENSOR_NORMALIZATION;
 
         for(PhysicalObject object : visibleObjects){
-            Point force = getForce(object.getMass(), object.getPosition());
-            total_force_x += force.x;
-            total_force_y += force.y;
+            double[] force = getForce(object.getMass(), object.getPosition());
+            total_force_x += force[0];
+            total_force_y += force[1];
         }
 
         double acc_x = (total_force_x / mass) * Constants.TIME_CONSTANT;
@@ -110,20 +110,22 @@ public class PhysicalObject {
     /**
      * Gravity formula: F = (GMm)/r^2
      * */
-    private Point getForce(int targetMass, Point targetPosition){
+    private double[] getForce(int targetMass, Point targetPosition){
+
+        double[] force = {0.0, 0.0};
 
         int distance_x = Math.abs(targetPosition.x - position.x);
         int distance_y = Math.abs(targetPosition.y - position.y);
         double distance_scale = Math.sqrt(Math.pow(distance_x, 2) + Math.pow(distance_y, 2));
 
         if((int)distance_scale == 0){
-            return new Point(0, 0);
+            return force;
         }
 
-        int force_scale = (int)((Constants.GRAVITY_CONSTANT * targetMass * mass)/(Math.pow(distance_x , 2) + Math.pow(distance_y, 2)));
+        double force_scale = (Constants.GRAVITY_CONSTANT * targetMass * mass)/(Math.pow(distance_x , 2) + Math.pow(distance_y, 2));
 
-        int force_x = (int)(force_scale * distance_x / distance_scale);
-        int force_y = (int)(force_scale * distance_y / distance_scale);
+        double force_x = force_scale * distance_x / distance_scale;
+        double force_y = force_scale * distance_y / distance_scale;
 
         if(position.x > targetPosition.x){
             force_x = -force_x;
@@ -133,7 +135,10 @@ public class PhysicalObject {
             force_y = -force_y;
         }
 
-        return new Point(force_x, force_y);
+        force[0] = force_x;
+        force[1] = force_y;
+
+        return force;
     }
 
     private void checkBounce(){
