@@ -54,7 +54,7 @@ public class PhysicalObject extends SpaceDimension{
 
     }
 
-    public void updateVelocity(List<PhysicalObject> visibleObjects, double sensor_x, double sensor_y){
+    public void updateVelocity(List<Blackhole> visibleObjects, double sensor_x, double sensor_y){
 
         if(this instanceof Blackhole && !App.BLACKHOLE_MOVABLE){
             return;

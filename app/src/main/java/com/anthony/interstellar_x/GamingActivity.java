@@ -33,7 +33,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     public FrameLayout rlBackground;
     public List<PhysicalObject> physicalObjects = new ArrayList<>();
     public List<CheckPoint> checkPoints = new ArrayList<>();
-    public List<PhysicalObject> gravityList;
+    public List<Blackhole> gravityList;
 
     public SensorManager senSensorManager;
     public Sensor senAccelerometer;
@@ -244,10 +244,10 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     }
 
     private void extractBlackholes() {
-        List<PhysicalObject> blackholes = new ArrayList<>();
+        List<Blackhole> blackholes = new ArrayList<>();
         for (PhysicalObject physicalObject : physicalObjects) {
             if (physicalObject instanceof Blackhole) {
-                blackholes.add(physicalObject);
+                blackholes.add((Blackhole)physicalObject);
             }
         }
         gravityList = blackholes;
