@@ -12,6 +12,8 @@ import java.util.Random;
  */
 public class Constants {
 
+    public static final int GAP = 50;
+
     public static final double MAX_VECTOR_VELOCITY = 35.0;
     public static final double SENSOR_NORMALIZATION = 0.1;
     public static final int GRAVITY_CONSTANT = 10;

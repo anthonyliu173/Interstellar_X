@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -106,13 +107,6 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             public void run() {
                 declarePhysicalObjects();
                 declareCheckPoints();
-                for (PhysicalObject physicalObject : physicalObjects) {
-                    rlBackground.addView(physicalObject.getImageView());
-                }
-                if(checkPoints.size() > 0){
-                    rlBackground.addView(checkPoints.get(0).getImageView());
-                    checkPoints.get(0).getImageView().setVisibility(View.VISIBLE);
-                }
                 updateInitialPosition();
                 extractBlackholes();
                 hideLoading();
@@ -279,4 +273,18 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     public void CheckPointReached(CheckPoint checkPoint) {
 
     }
+
+    protected void showNextCheckPoint(){
+
+        if (checkPoints.get(0).getImageView() != null) {
+            ViewGroup parent = (ViewGroup) checkPoints.get(0).getImageView().getParent();
+            if (parent != null) {
+                parent.removeView(checkPoints.get(0).getImageView());
+            }
+        }
+
+        rlBackground.addView(checkPoints.get(0).getImageView());
+        checkPoints.get(0).getImageView().setVisibility(View.VISIBLE);
+    }
+
 }
