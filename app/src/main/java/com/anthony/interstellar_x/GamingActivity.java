@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anthony.interstellar_x.Interstellar_Objects.Blackhole;
+import com.anthony.interstellar_x.Interstellar_Objects.CheckPoint;
 import com.anthony.interstellar_x.Interstellar_Objects.Meteorite;
 import com.anthony.interstellar_x.Interstellar_Objects.PhysicalObject;
 import com.anthony.interstellar_x.Interstellar_Objects.Spacecraft;
@@ -31,6 +32,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
     public FrameLayout rlBackground;
     public List<PhysicalObject> physicalObjects = new ArrayList<>();
+    public List<CheckPoint> checkPoints = new ArrayList<>();
     public List<PhysicalObject> gravityList;
 
     public SensorManager senSensorManager;
@@ -64,7 +66,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     protected void onResume() {
         super.onResume();
 //        extentScreen();
-        if(senSensorManager != null && senAccelerometer != null) {
+        if (senSensorManager != null && senAccelerometer != null) {
             senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
         }
     }
@@ -88,6 +90,10 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         txtMaxSpeed = (TextView) findViewById(R.id.txtMaxSpeed);
     }
 
+    protected void declareCheckPoints() {
+
+    }
+
     protected void declarePhysicalObjects() {
 
     }
@@ -99,8 +105,13 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             @Override
             public void run() {
                 declarePhysicalObjects();
+                declareCheckPoints();
                 for (PhysicalObject physicalObject : physicalObjects) {
                     rlBackground.addView(physicalObject.getImageView());
+                }
+                if(checkPoints.size() > 0){
+                    rlBackground.addView(checkPoints.get(0).getImageView());
+                    checkPoints.get(0).getImageView().setVisibility(View.VISIBLE);
                 }
                 updateInitialPosition();
                 extractBlackholes();
@@ -116,6 +127,10 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             physicalObject.getImageView().setX(physicalObject.getPosition().x - physicalObject.getDimension().x / 2);
             physicalObject.getImageView().setY(physicalObject.getPosition().y - physicalObject.getDimension().y / 2);
         }
+        for(CheckPoint checkPoint : checkPoints){
+            checkPoint.getImageView().setX(checkPoint.getPosition().x - checkPoint.getDimension().x / 2);
+            checkPoint.getImageView().setY(checkPoint.getPosition().y - checkPoint.getDimension().y / 2);
+        }
     }
 
     private void setSensor() {
@@ -124,17 +139,17 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
-    private void showLoading(){
+    private void showLoading() {
         rlLoading.setVisibility(View.VISIBLE);
-        ImageView imgSpacecraft = ((ImageView)findViewById(R.id.imgSpacecraft));
+        ImageView imgSpacecraft = ((ImageView) findViewById(R.id.imgSpacecraft));
         imgSpacecraft.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_fast));
     }
 
-    private void hideLoading(){
+    private void hideLoading() {
         rlLoading.setVisibility(View.GONE);
     }
 
-    private void showPreamble(){
+    private void showPreamble() {
 
         rlPreamble.setVisibility(View.VISIBLE);
         flPreamble.setVisibility(View.VISIBLE);
@@ -156,8 +171,9 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     protected void onPause() {
         super.onPause();
 
-        senSensorManager.unregisterListener(this);
-
+        if(senSensorManager != null) {
+            senSensorManager.unregisterListener(this);
+        }
     }
 
     @Override
@@ -178,6 +194,9 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
                     physicalObject.updateVelocity(gravityList, -x, y);
                     txtSpeed.setText(String.format(getResources().getString(R.string.speed), String.valueOf(physicalObject.getSpeed())));
                     txtMaxSpeed.setText(String.format(getResources().getString(R.string.max_speed), String.valueOf(physicalObject.getMaxSpeed())));
+                    if(checkPoints.size() > 0){
+                        Collision.checkPointAnalysis((Spacecraft)physicalObject, checkPoints.get(0));
+                    }
                 }
                 if (physicalObject instanceof Meteorite) {
                     physicalObject.updateVelocity(gravityList, 0, 0);
@@ -197,21 +216,30 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             }
 
             for (PhysicalObject physicalObject : removingObject) {
-                if(physicalObject instanceof Spacecraft){
+                if (physicalObject instanceof Spacecraft) {
                     gameOver();
                     break;
                 }
-                if(physicalObject instanceof Meteorite){
+                if (physicalObject instanceof Meteorite) {
                     physicalObjects.remove(physicalObject);
                     rlBackground.removeView(physicalObject.getImageView());
                 }
             }
+
+            update();
 
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    /**
+     * update() is for Level activities purposes
+     * */
+    protected void update(){
 
     }
 
@@ -235,7 +263,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         removingObject.add(meteorite);
     }
 
-    private void gameOver(){
+    private void gameOver() {
         senSensorManager.unregisterListener(this);
         Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show();
         Handler handler = new Handler();
@@ -248,7 +276,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     }
 
     @Override
-    public void CheckPointReached() {
+    public void CheckPointReached(CheckPoint checkPoint) {
 
     }
 }

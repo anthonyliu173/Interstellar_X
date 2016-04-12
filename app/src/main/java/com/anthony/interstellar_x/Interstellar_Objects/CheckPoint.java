@@ -2,24 +2,22 @@ package com.anthony.interstellar_x.Interstellar_Objects;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.anthony.interstellar_x.CheckPointReachedListener;
 import com.anthony.interstellar_x.Constants;
 import com.anthony.interstellar_x.GamingActivity;
-import com.anthony.interstellar_x.R;
+import com.anthony.interstellar_x.SpaceDimension;
+import com.anthony.interstellar_x.Views.CircularView;
 
 /**
  * Created by anthonyliu on 2016/4/11.
  */
-public class CheckPoint extends PhysicalObject{
+public class CheckPoint extends SpaceDimension{
 
     protected CheckPointReachedListener listener;
-
-    protected Point position;
-    protected Point dimension;
-    protected ImageView imageView;
+    protected CircularView imageView;
 
     public CheckPoint(Context context, Point position) {
         this.setListener((GamingActivity)context);
@@ -44,19 +42,19 @@ public class CheckPoint extends PhysicalObject{
         this.dimension = dimension;
     }
 
-    public ImageView getImageView() {
+    public CircularView getImageView() {
         return imageView;
     }
 
-    public void setImageView(ImageView imageView) {
+    public void setImageView(CircularView imageView) {
         this.imageView = imageView;
     }
 
     protected void setImage(Context context){
-        this.imageView = new ImageView(context);
+        this.imageView = new CircularView(context);
         this.imageView.setLayoutParams(new LinearLayout.LayoutParams(dimension.x, dimension.y));
         this.imageView.requestLayout();
-        this.imageView.setBackgroundResource(R.drawable.spacecraft);
+        this.imageView.setVisibility(View.GONE);
     }
 
     public CheckPointReachedListener getListener() {
@@ -68,6 +66,6 @@ public class CheckPoint extends PhysicalObject{
     }
 
     public void reachCheckPoint(){
-        listener.CheckPointReached();
+        listener.CheckPointReached(this);
     }
 }

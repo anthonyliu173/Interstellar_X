@@ -9,6 +9,7 @@ import com.anthony.interstellar_x.App;
 import com.anthony.interstellar_x.Constants;
 import com.anthony.interstellar_x.R;
 import com.anthony.interstellar_x.ScreenDimension;
+import com.anthony.interstellar_x.SpaceDimension;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,11 +18,9 @@ import java.util.List;
 /**
  * Created by anthonyliu on 2016/4/3.
  */
-public class PhysicalObject {
+public class PhysicalObject extends SpaceDimension{
 
     protected int mass;
-    protected Point dimension;
-    protected Point position;
     protected Double velocity_x = 0.0;
     protected Double velocity_y = 0.0;
     protected Double speed = 0.0;

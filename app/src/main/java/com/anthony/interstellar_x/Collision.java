@@ -20,24 +20,16 @@ public class Collision {
             if (i < (physicalObjects.size() - 1)) {
                 for (int j = i + 1; j < physicalObjects.size(); j++) {
                     if (isColliding(physicalObjects.get(i), physicalObjects.get(j))) {
-                        if (physicalObjects.get(i) instanceof CheckPoint || physicalObjects.get(j) instanceof CheckPoint) {
-                            if(physicalObjects.get(i) instanceof CheckPoint){
-                                ((CheckPoint) physicalObjects.get(i)).reachCheckPoint();
-                            }else{
-                                ((CheckPoint) physicalObjects.get(j)).reachCheckPoint();
+                        // PhysicalObject is sucked into a blackhole 啾咪～
+                        if (((physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(i) instanceof Meteorite) && physicalObjects.get(j) instanceof Blackhole) ||
+                                ((physicalObjects.get(j) instanceof Spacecraft || physicalObjects.get(j) instanceof Meteorite) && physicalObjects.get(i) instanceof Blackhole)) {
+                            if (physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(j) instanceof Spacecraft) {
+                                ((Spacecraft) physicalObjects.get(i)).blackholeCollision();
+                            } else if (physicalObjects.get(i) instanceof Meteorite || physicalObjects.get(j) instanceof Meteorite) {
+                                ((Meteorite) physicalObjects.get(i)).blackholeCollision();
                             }
                         } else {
-                            // PhysicalObject is sucked into a blackhole 啾咪～
-                            if (((physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(i) instanceof Meteorite) && physicalObjects.get(j) instanceof Blackhole) ||
-                                    ((physicalObjects.get(j) instanceof Spacecraft || physicalObjects.get(j) instanceof Meteorite) && physicalObjects.get(i) instanceof Blackhole)) {
-                                if (physicalObjects.get(i) instanceof Spacecraft || physicalObjects.get(j) instanceof Spacecraft) {
-                                    ((Spacecraft) physicalObjects.get(i)).blackholeCollision();
-                                } else if (physicalObjects.get(i) instanceof Meteorite || physicalObjects.get(j) instanceof Meteorite) {
-                                    ((Meteorite) physicalObjects.get(i)).blackholeCollision();
-                                }
-                            } else {
-                                processCollision(physicalObjects.get(i), physicalObjects.get(j));
-                            }
+                            processCollision(physicalObjects.get(i), physicalObjects.get(j));
                         }
                     }
                 }
@@ -46,10 +38,16 @@ public class Collision {
 
     }
 
+    public static void checkPointAnalysis(Spacecraft spacecraft, CheckPoint checkPoint) {
+        if (isColliding(spacecraft, checkPoint)) {
+            (checkPoint).reachCheckPoint();
+        }
+    }
+
     /**
      * Check if two objects are colliding
      */
-    private static boolean isColliding(PhysicalObject object1, PhysicalObject object2) {
+    private static boolean isColliding(SpaceDimension object1, SpaceDimension object2) {
         boolean isColliding = false;
         boolean isBackhole = false; // if one object is blackhole, different boundary is used
 

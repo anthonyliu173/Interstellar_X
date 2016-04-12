@@ -7,4 +7,7 @@
 
     <color name="white">#ffffff</color>
 
+    <color name="checkpoint_color1">#77ffff00</color>
+    <color name="checkpoint_color2">#77ff0000</color>
+
 </resources>
