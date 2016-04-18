@@ -41,6 +41,7 @@ public class Constants {
     public static final int CHECKPOINT_DIMENSION = 160;
 
     public static final int RANDOM_VELOCITY_MAX = 7;
+    public static final int RANDOM_VELOCITY_MIN = 4;
 
     public static final int GAMEOVER_TIME = 2000;
     public static final int PREAMBLE_TIME = 3000;
@@ -64,7 +65,7 @@ public class Constants {
      * @param lowerBound
      * @param upperBound
      * */
-    private static int getRandom(int lowerBound, int upperBound){
+    public static int getRandom(int lowerBound, int upperBound){
         lowerBound = lowerBound + 1; // makes lowerBound exclusive
         return new Random().nextInt(upperBound - lowerBound) + lowerBound;
     }

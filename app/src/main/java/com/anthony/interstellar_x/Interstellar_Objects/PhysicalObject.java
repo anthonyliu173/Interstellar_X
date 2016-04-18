@@ -96,19 +96,19 @@ public class PhysicalObject extends SpaceDimension{
 
     public void isInBound(){
         if(this instanceof Meteorite){
-            if(this.getPosition().x + 3*this.getDimension().x < 0){
+            if(this.getPosition().x + 1 * ScreenDimension.getScreenWidth() < 0){
                 ((Meteorite)this).meteoriteGone();
                 return;
             }
-            if(this.getPosition().y + 3*this.getDimension().y < 0){
+            if(this.getPosition().y + 1 * ScreenDimension.getScreenWidth() < 0){
                 ((Meteorite)this).meteoriteGone();
                 return;
             }
-            if(this.getPosition().x - 2*this.getDimension().x > ScreenDimension.getScreenWidth()){
+            if(this.getPosition().x - 1 * ScreenDimension.getScreenWidth() > ScreenDimension.getScreenWidth()){
                 ((Meteorite)this).meteoriteGone();
                 return;
             }
-            if(this.getPosition().y - 2*this.getDimension().y > ScreenDimension.getScreenHeight()){
+            if(this.getPosition().y - 1 * ScreenDimension.getScreenWidth() > ScreenDimension.getScreenHeight()){
                 ((Meteorite)this).meteoriteGone();
                 return;
             }

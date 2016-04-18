@@ -9,6 +9,9 @@ import com.anthony.interstellar_x.OnBlackholeHorizonEventListener;
 import com.anthony.interstellar_x.OnMeteoriteByPassListener;
 import com.anthony.interstellar_x.ScreenDimension;
 
+import java.util.Date;
+import java.util.Random;
+
 /**
  * Created by anthonyliu on 2016/4/3.
  */
@@ -36,10 +39,13 @@ public class Meteorite extends PhysicalObject {
         setBlackholeListener((GamingActivity)context);
         this.size = METEORITE_SIZE.getRandom();
         this.mass = findMass(size);
+
         this.dimension = new Point(findDimension(size), findDimension(size));
+
         this.position = Constants.getRandomPositionOnScreen(this.dimension.x, this.dimension.y);
         this.velocity_x = Constants.getRandomVelocity();
         this.velocity_y = Constants.getRandomVelocity();
+
         this.setImage(context);
     }
 
@@ -52,9 +58,10 @@ public class Meteorite extends PhysicalObject {
         this.size = size;
         this.mass = findMass(size);
         this.dimension = new Point(findDimension(size), findDimension(size));
-        this.position = Constants.getRandomPositionOnScreen(this.dimension.x, this.dimension.y);
-        this.velocity_x = Constants.getRandomVelocity();
-        this.velocity_y = Constants.getRandomVelocity();
+        this.position = getRandomPosition();
+        getRandomVelocity();
+//        this.velocity_x = Constants.getRandomVelocity();
+//        this.velocity_y = Constants.getRandomVelocity();
         this.setImage(context);
     }
 
@@ -139,4 +146,47 @@ public class Meteorite extends PhysicalObject {
     public void setMeteoriteByPassListener(OnMeteoriteByPassListener meteoriteByPassListener) {
         this.meteoriteByPassListener = meteoriteByPassListener;
     }
+
+    /**
+     * getRandomPosition returns random position on specified boundary
+     * */
+    private Point getRandomPosition(){
+        long time = new Date().getTime();
+        int x, y;
+        if(time % 2 == 0){
+            if(time % 4 == 0){
+                x = (int)(-0.5*ScreenDimension.getScreenWidth());
+            }else{
+                x = (int)(0.5*ScreenDimension.getScreenWidth() + ScreenDimension.getScreenWidth());
+            }
+            y = randInt((int)(-0.5*ScreenDimension.getScreenWidth()), ScreenDimension.getScreenHeight() + (int)(0.5*ScreenDimension.getScreenWidth()));
+        }else{
+            if((time - 1) % 4 == 0){
+                y = (int)(-0.5*ScreenDimension.getScreenWidth());
+            }else{
+                y = (int)(0.5*ScreenDimension.getScreenWidth() + ScreenDimension.getScreenHeight());
+            }
+            x = randInt((int)(-0.5*ScreenDimension.getScreenWidth()), ScreenDimension.getScreenWidth() + (int)(0.5*ScreenDimension.getScreenWidth()));
+        }
+
+        return new Point(x, y);
+
+    }
+
+    private void getRandomVelocity(){
+        int x_pass = randInt((int)((double)ScreenDimension.getScreenWidth()/8), (int)((double)7*ScreenDimension.getScreenWidth()/8));
+        int y_pass = randInt((int)((double)ScreenDimension.getScreenHeight()/8), (int)((double)7*ScreenDimension.getScreenHeight()/8));
+
+        double speed = Constants.getRandom(Constants.RANDOM_VELOCITY_MIN, Constants.RANDOM_VELOCITY_MAX);
+        this.velocity_x = speed * Math.cos(Math.atan((y_pass - this.position.y)/(x_pass - this.position.x)));
+        this.velocity_y = speed * Math.sin(Math.atan((y_pass - this.position.y)/(x_pass - this.position.x)));
+
+    }
+
+    public static int randInt(int min, int max) {
+        int randomNum = new Random().nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
+
+
 }

@@ -121,7 +121,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
             physicalObject.getImageView().setX(physicalObject.getPosition().x - physicalObject.getDimension().x / 2);
             physicalObject.getImageView().setY(physicalObject.getPosition().y - physicalObject.getDimension().y / 2);
         }
-        for(CheckPoint checkPoint : checkPoints){
+        for (CheckPoint checkPoint : checkPoints) {
             checkPoint.getImageView().setX(checkPoint.getPosition().x - checkPoint.getDimension().x / 2);
             checkPoint.getImageView().setY(checkPoint.getPosition().y - checkPoint.getDimension().y / 2);
         }
@@ -165,7 +165,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
     protected void onPause() {
         super.onPause();
 
-        if(senSensorManager != null) {
+        if (senSensorManager != null) {
             senSensorManager.unregisterListener(this);
         }
     }
@@ -188,8 +188,8 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
                     physicalObject.updateVelocity(gravityList, -x, y);
                     txtSpeed.setText(String.format(getResources().getString(R.string.speed), String.valueOf(physicalObject.getSpeed())));
                     txtMaxSpeed.setText(String.format(getResources().getString(R.string.max_speed), String.valueOf(physicalObject.getMaxSpeed())));
-                    if(checkPoints.size() > 0){
-                        Collision.checkPointAnalysis((Spacecraft)physicalObject, checkPoints.get(0));
+                    if (checkPoints.size() > 0) {
+                        Collision.checkPointAnalysis((Spacecraft) physicalObject, checkPoints.get(0));
                     }
                 }
                 if (physicalObject instanceof Meteorite) {
@@ -218,6 +218,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
                     physicalObjects.remove(physicalObject);
                     rlBackground.removeView(physicalObject.getImageView());
                 }
+
             }
 
             update();
@@ -232,8 +233,8 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
     /**
      * update() is for Level activities purposes
-     * */
-    protected void update(){
+     */
+    protected void update() {
 
     }
 
@@ -241,7 +242,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
         List<Blackhole> blackholes = new ArrayList<>();
         for (PhysicalObject physicalObject : physicalObjects) {
             if (physicalObject instanceof Blackhole) {
-                blackholes.add((Blackhole)physicalObject);
+                blackholes.add((Blackhole) physicalObject);
             }
         }
         gravityList = blackholes;
@@ -274,7 +275,7 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
     }
 
-    protected void showNextCheckPoint(){
+    protected void showNextCheckPoint() {
 
         if (checkPoints.get(0).getImageView() != null) {
             ViewGroup parent = (ViewGroup) checkPoints.get(0).getImageView().getParent();
@@ -285,6 +286,10 @@ public class GamingActivity extends AppCompatActivity implements SensorEventList
 
         rlBackground.addView(checkPoints.get(0).getImageView());
         checkPoints.get(0).getImageView().setVisibility(View.VISIBLE);
+    }
+
+    protected void spawnMeteorite() {
+        Meteorite meteorite = new Meteorite(this);
     }
 
 }
