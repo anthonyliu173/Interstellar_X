@@ -2,6 +2,7 @@ package com.anthony.interstellar_x.Interstellar_Objects;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -51,6 +52,14 @@ public class PhysicalObject extends SpaceDimension{
         position.set((int) (position.x + (velocity_x * Constants.TIME_CONSTANT)), (int) (position.y + (velocity_y * Constants.TIME_CONSTANT)));
         imageView.setX(position.x - dimension.x / 2);
         imageView.setY(position.y - dimension.y / 2);
+
+        if(this instanceof Meteorite){
+            // Hide warning image when meteorite enters the screen
+            if( 0 < position.x + dimension.x / 2 && position.x - dimension.x / 2 < ScreenDimension.getScreenWidth()
+                    && 0 < position.y + dimension.y / 2 && position.y - dimension.y / 2 < ScreenDimension.getScreenHeight()){
+                ((Meteorite)this).getImgWarning().setVisibility(View.GONE);
+            }
+        }
 
     }
 

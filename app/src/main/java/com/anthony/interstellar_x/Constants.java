@@ -37,6 +37,7 @@ public class Constants {
     public static final int METEORITE_MASS_GRANDE_DIMENSION = 110;
     public static final int METEORITE_MASS_VENTI = 20;
     public static final int METEORITE_MASS_VENTI_DIMENSION = 130;
+    public static final int METEORITE_WARNING_DIMENSION = 80;
 
     public static final int CHECKPOINT_DIMENSION = 160;
 
